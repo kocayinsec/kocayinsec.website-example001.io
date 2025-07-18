@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Pricing Calculator - Emre Koçay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0A0E27;
+            --accent-cyan: #00D4FF;
+            --success-green: #00FF88;
+            --white: #FFFFFF;
+            --gray-light: #E5E7EB;
+            --gray-medium: #9CA3AF;
+            --gray-dark: #4B5563;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0A0E27 0%, #1a1f3a 100%);
+            color: var(--white);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pricing-calculator {
+            width: 100%;
+            max-width: 800px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--white) 0%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .calculator-container {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .calculator-options {
+            margin-bottom: 2rem;
+        }
+
+        .option-group {
+            margin-bottom: 2rem;
+        }
+
+        .option-group label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            color: var(--gray-light);
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        select option {
+            background: var(--primary-dark);
+            color: var(--white);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 400;
+            font-size: 1rem;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-group label:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            margin-right: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-group input[type="checkbox"]:checked {
+            background: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+        }
+
+        .checkbox-group input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--primary-dark);
+            font-weight: bold;
+        }
+
+        .calculator-result {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .total-price {
+            margin-bottom: 1rem;
+        }
+
+        .total-price .label {
+            font-size: 1rem;
+            color: var(--gray-medium);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .total-price .price {
+            font-family: 'Inter', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            display: block;
+            animation: countUp 0.6s ease-out;
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .delivery-time {
+            margin-bottom: 2rem;
+        }
+
+        .delivery-time .label {
+            font-size: 0.9rem;
+            color: var(--gray-medium);
+            margin-right: 0.5rem;
+        }
+
+        .delivery-time .time {
+            font-weight: 500;
+            color: var(--success-green);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--success-green));
+            color: var(--primary-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Feature tags */
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .feature-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 16px;
+            font-size: 0.85rem;
+            color: var(--success-green);
+        }
+
+        /* Pricing breakdown */
+        .pricing-breakdown {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: var(--gray-light);
+            text-align: left;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .breakdown-item.total {
+            font-weight: 600;
+            color: var(--white);
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .calculator-container {
+                padding: 1.5rem;
+            }
+            
+            .total-price .price {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Special offer badge */
+        .special-offer {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: var(--success-green);
+            color: var(--primary-dark);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="pricing-calculator">
+        <h2 class="section-title">Fiyat Hesaplayıcı</h2>
+        <div class="calculator-container" style="position: relative;">
+            <span class="special-offer">%20 İNDİRİM</span>
+            
+            <div class="calculator-options">
+                <div class="option-group">
+                    <label>Site Tipi</label>
+                    <select id="site-type">
+                        <option value="1500">Landing Page - Tek Sayfa (1,500 TL)</option>
+                        <option value="2500" selected>Kurumsal Site - 5 Sayfa (2,500 TL)</option>
+                        <option value="4000">E-Ticaret Sitesi (4,000 TL)</option>
+                        <option value="0">Özel Proje (Teklif Alın)</option>
+                    </select>
+                </div>
+                
+                <div class="option-group">
+                    <label>Ek Özellikler</label>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" value="500" data-feature="seo"> 
+                            SEO Optimizasyonu (+500 TL)
+                        </label>
+                        <label>
+                            <input type="checkbox" value="300" data-feature="speed"> 
+                            Hız Optimizasyonu (+300 TL)
+                        </label>
+                        <label>
+                            <input type="checkbox" value="400" data-feature="lang"> 
+                            Çoklu Dil Desteği (+400 TL)
+                        </label>
+                        <label>
+                            <input type="checkbox" value="600" data-feature="ecommerce"> 
+                            Ödeme Sistemi Entegrasyonu (+600 TL)
+                        </label>
+                        <label>
+                            <input type="checkbox" value="200" data-feature="chat"> 
+                            Canlı Destek Entegrasyonu (+200 TL)
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="calculator-result">
+                <div class="total-price">
+                    <span class="label">Toplam Tutar:</span>
+                    <span class="price" id="total-price">2,500 TL</span>
+                </div>
+                <div class="delivery-time">
+                    <span class="label">Tahmini Teslimat:</span>
+                    <span class="time" id="delivery-time">2-3 Gün</span>
+                </div>
+                
+                <div class="feature-tags" id="feature-tags">
+                    <span class="feature-tag">✓ SSL Sertifikası</span>
+                    <span class="feature-tag">✓ Mobil Uyumlu</span>
+                    <span class="feature-tag">✓ 1 Yıl Hosting</span>
+                </div>
+                
+                <div class="pricing-breakdown" id="pricing-breakdown">
+                    <div class="breakdown-item">
+                        <span>Temel Paket:</span>
+                        <span id="base-price">2,500 TL</span>
+                    </div>
+                    <div class="breakdown-item total">
+                        <span>Toplam:</span>
+                        <span id="breakdown-total">2,500 TL</span>
+                    </div>
+                </div>
+                
+                <button class="btn-primary">
+                    Hemen Teklif Al →
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Pricing data
+        const deliveryTimes = {
+            1500: "1-2 Gün",
+            2500: "2-3 Gün",
+            4000: "4-5 Gün",
+            0: "Görüşmeye Bağlı"
+        };
+
+        const baseFeatures = {
+            1500: ["✓ SSL Sertifikası", "✓ Mobil Uyumlu", "✓ 6 Ay Hosting"],
+            2500: ["✓ SSL Sertifikası", "✓ Mobil Uyumlu", "✓ 1 Yıl Hosting"],
+            4000: ["✓ SSL Sertifikası", "✓ Mobil Uyumlu", "✓ 2 Yıl Hosting", "✓ Ürün Yönetimi"],
+            0: ["✓ Özel Çözümler", "✓ Tam Destek", "✓ Proje Bazlı"]
+        };
+
+        // Calculate price
+        function calculatePrice() {
+            const siteType = document.getElementById('site-type');
+            const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked');
+            const basePrice = parseInt(siteType.value) || 0;
+            
+            let additionalPrice = 0;
+            let selectedFeatures = [];
+            
+            checkboxes.forEach(checkbox => {
+                additionalPrice += parseInt(checkbox.value);
+                const feature = checkbox.getAttribute('data-feature');
+                selectedFeatures.push(feature);
+            });
+            
+            const totalPrice = basePrice + additionalPrice;
+            
+            // Update UI
+            updatePriceDisplay(totalPrice, basePrice, additionalPrice);
+            updateDeliveryTime(basePrice, selectedFeatures);
+            updateFeatureTags(basePrice, selectedFeatures);
+            updateBreakdown(basePrice, checkboxes);
+        }
+
+        function updatePriceDisplay(total, base, additional) {
+            const priceElement = document.getElementById('total-price');
+            
+            if (total === 0) {
+                priceElement.textContent = 'Teklif Alın';
+            } else {
+                // Animate price change
+                priceElement.style.animation = 'none';
+                setTimeout(() => {
+                    priceElement.style.animation = 'countUp 0.6s ease-out';
+                    priceElement.textContent = total.toLocaleString('tr-TR') + ' TL';
+                }, 10);
+            }
+        }
+
+        function updateDeliveryTime(basePrice, features) {
+            const deliveryElement = document.getElementById('delivery-time');
+            let baseTime = deliveryTimes[basePrice] || "Görüşmeye Bağlı";
+            
+            // Add extra time for complex features
+            if (features.includes('ecommerce') || features.includes('lang')) {
+                if (basePrice === 1500) baseTime = "2-3 Gün";
+                else if (basePrice === 2500) baseTime = "3-4 Gün";
+                else if (basePrice === 4000) baseTime = "5-7 Gün";
+            }
+            
+            deliveryElement.textContent = baseTime;
+        }
+
+        function updateFeatureTags(basePrice, selectedFeatures) {
+            const tagsContainer = document.getElementById('feature-tags');
+            tagsContainer.innerHTML = '';
+            
+            // Add base features
+            const features = baseFeatures[basePrice] || baseFeatures[0];
+            features.forEach(feature => {
+                const tag = document.createElement('span');
+                tag.className = 'feature-tag';
+                tag.textContent = feature;
+                tagsContainer.appendChild(tag);
+            });
+            
+            // Add selected features
+            const featureNames = {
+                seo: "✓ SEO Optimizasyonu",
+                speed: "✓ Hız Optimizasyonu",
+                lang: "✓ Çoklu Dil",
+                ecommerce: "✓ Ödeme Sistemi",
+                chat: "✓ Canlı Destek"
+            };
+            
+            selectedFeatures.forEach(feature => {
+                if (featureNames[feature]) {
+                    const tag = document.createElement('span');
+                    tag.className = 'feature-tag';
+                    tag.textContent = featureNames[feature];
+                    tag.style.borderColor = 'rgba(0, 212, 255, 0.3)';
+                    tag.style.backgroundColor = 'rgba(0, 212, 255, 0.1)';
+                    tag.style.color = 'var(--accent-cyan)';
+                    tagsContainer.appendChild(tag);
+                }
+            });
+        }
+
+        function updateBreakdown(basePrice, checkboxes) {
+            const breakdownContainer = document.getElementById('pricing-breakdown');
+            let html = '';
+            
+            if (basePrice > 0) {
+                html += `
+                    <div class="breakdown-item">
+                        <span>Temel Paket:</span>
+                        <span>${basePrice.toLocaleString('tr-TR')} TL</span>
+                    </div>
+                `;
+                
+                checkboxes.forEach(checkbox => {
+                    const label = checkbox.parentElement.textContent.trim();
+                    const price = parseInt(checkbox.value);
+                    html += `
+                        <div class="breakdown-item">
+                            <span>${label.split('(')[0].trim()}:</span>
+                            <span>+${price} TL</span>
+                        </div>
+                    `;
+                });
+                
+                const total = basePrice + Array.from(checkboxes).reduce((sum, cb) => sum + parseInt(cb.value), 0);
+                html += `
+                    <div class="breakdown-item total">
+                        <span>Toplam:</span>
+                        <span>${total.toLocaleString('tr-TR')} TL</span>
+                    </div>
+                `;
+            } else {
+                html = '<div class="breakdown-item">Özel proje için iletişime geçin</div>';
+            }
+            
+            breakdownContainer.innerHTML = html;
+        }
+
+        // Event listeners
+        document.getElementById('site-type').addEventListener('change', calculatePrice);
+        document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', calculatePrice);
+        });
+
+        // Initialize
+        calculatePrice();
+    </script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emre Koçay - Web Developer Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0A0E27;
+            --accent-cyan: #00D4FF;
+            --success-green: #00FF88;
+            --white: #FFFFFF;
+            --gray-light: #E5E7EB;
+            --gray-medium: #9CA3AF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--primary-dark);
+            color: var(--white);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0A0E27 0%, #1a1f3a 100%);
+        }
+
+        .header h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--white) 0%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            color: var(--gray-light);
+            margin-bottom: 2rem;
+        }
+
+        .demos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .demo-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .demo-card h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-cyan);
+        }
+
+        .demo-card p {
+            margin-bottom: 1.5rem;
+            color: var(--gray-light);
+        }
+
+        .demo-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--success-green));
+            color: var(--primary-dark);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .features {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .features li {
+            padding: 0.5rem 0;
+            color: var(--gray-light);
+        }
+
+        .features li::before {
+            content: "✓";
+            color: var(--success-green);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 3rem;
+        }
+
+        .footer p {
+            color: var(--gray-medium);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 16px;
+            font-size: 0.8rem;
+            color: var(--success-green);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .demos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Emre Koçay</h1>
+            <p>Web Developer & IT Consultant</p>
+            <div class="badge">🚀 CANLI DEMO SİTELERİ</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="demos-grid">
+            <div class="demo-card">
+                <h3>🎭 Hero Section</h3>
+                <p>Animasyonlu typing effect ve modern tasarım ile etkileyici giriş sayfası.</p>
+                <ul class="features">
+                    <li>Animasyonlu yazı efekti</li>
+                    <li>Floating parçacıklar</li>
+                    <li>Responsive tasarım</li>
+                    <li>Interactive butonlar</li>
+                </ul>
+                <a href="hero_section.html" class="demo-button">Canlı Demo →</a>
+            </div>
+
+            <div class="demo-card">
+                <h3>📊 Stats Dashboard</h3>
+                <p>Gerçek zamanlı istatistikler ve animasyonlu sayaçlar ile profesyonel dashboard.</p>
+                <ul class="features">
+                    <li>Animasyonlu sayaçlar</li>
+                    <li>Canlı güncellemeler</li>
+                    <li>Progress bar animasyonları</li>
+                    <li>Hover efektleri</li>
+                </ul>
+                <a href="stats_dashboard.html" class="demo-button">Canlı Demo →</a>
+            </div>
+
+            <div class="demo-card">
+                <h3>💰 Pricing Calculator</h3>
+                <p>İnteraktif fiyat hesaplayıcı ile anında maliyet hesaplama sistemi.</p>
+                <ul class="features">
+                    <li>Dinamik fiyat hesaplama</li>
+                    <li>Özellik seçim sistemi</li>
+                    <li>Teslimat süresi gösterimi</li>
+                    <li>Detaylı fiyat dökümü</li>
+                </ul>
+                <a href="pricing_calculator.html" class="demo-button">Canlı Demo →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>&copy; 2024 Emre Koçay. Tüm hakları saklıdır.</p>
+            <p>Web Developer & IT Consultant | 15+ Yıllık Deneyim</p>
+        </div>
+    </div>
+</body>
+</html>
