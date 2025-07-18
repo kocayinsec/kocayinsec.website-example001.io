@@ -1,6 +1,6 @@
 # Emre Koçay - Dynamic Portfolio Website
 
-🚀 **Live Demo:** https://emrekocay.github.io/website-example/
+🚀 **Live Demo:** /kocayinsec.github.io/website-example/
 
 ## Overview
 
