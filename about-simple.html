@@ -6,6 +6,22 @@
     <title>About - Emre Koçay | Cybersecurity & Web Developer</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-dark: #0A0E27;
+            --accent-cyan: #00D4FF;
+            --success-green: #00FF88;
+            --white: #FFFFFF;
+            --gray-light: #E5E7EB;
+            --purple-deep: #2D1B69;
+            --gold: #FFD700;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(45deg, #0A0E27 0%, #1a1f3a 50%, #2D1B69 100%);
@@ -13,56 +29,335 @@
             margin: 0;
             padding: 2rem;
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Matrix Rain Background */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .matrix-char {
+            position: absolute;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: var(--success-green);
+            opacity: 0.6;
+            animation: matrixFall linear infinite;
+        }
+
+        @keyframes matrixFall {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-cyan);
+            animation: floatParticle 15s linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(200px) rotate(360deg);
+                opacity: 0;
+            }
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
         h1 {
             font-family: 'Inter', sans-serif;
-            font-size: 3rem;
-            color: #00D4FF;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            background: linear-gradient(135deg, var(--white) 0%, var(--accent-cyan) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 2rem;
+            position: relative;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 60px rgba(255, 215, 0, 0.3);
+            }
         }
         .profile {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 3rem;
             margin: 2rem 0;
+            backdrop-filter: blur(15px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(0, 212, 255, 0.05) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .profile:hover::before {
+            opacity: 1;
+        }
+
+        .profile:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-cyan);
+            box-shadow: 
+                0 25px 50px rgba(0, 212, 255, 0.2),
+                0 0 40px rgba(0, 212, 255, 0.1);
         }
         .skills {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
             margin: 2rem 0;
         }
         .skill {
-            background: rgba(0, 212, 255, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid rgba(0, 212, 255, 0.3);
+            background: rgba(0, 212, 255, 0.05);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: skillFloat 6s ease-in-out infinite;
+        }
+
+        .skill:nth-child(1) { animation-delay: 0s; }
+        .skill:nth-child(2) { animation-delay: 1.5s; }
+        .skill:nth-child(3) { animation-delay: 3s; }
+        .skill:nth-child(4) { animation-delay: 4.5s; }
+
+        @keyframes skillFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(1deg);
+            }
+        }
+
+        .skill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .skill:hover::after {
+            left: 100%;
+        }
+
+        .skill:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: var(--accent-cyan);
+            box-shadow: 
+                0 20px 40px rgba(0, 212, 255, 0.3),
+                0 0 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .skill h4 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            color: var(--accent-cyan);
         }
         .back-link {
-            color: #00D4FF;
+            display: inline-block;
+            color: var(--accent-cyan);
             text-decoration: none;
             font-size: 1.2rem;
+            padding: 12px 24px;
+            border: 2px solid var(--accent-cyan);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .back-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-cyan);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .back-link:hover::before {
+            left: 0;
+        }
+
+        .back-link:hover {
+            color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Experience timeline */
+        .experience-item {
+            text-align: left;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border-left: 3px solid var(--accent-cyan);
+            position: relative;
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 1.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Contact links styling */
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            text-align: left;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        /* Loading animations */
+        .loading {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .loading:nth-child(1) { animation-delay: 0.2s; }
+        .loading:nth-child(2) { animation-delay: 0.4s; }
+        .loading:nth-child(3) { animation-delay: 0.6s; }
+        .loading:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .skills {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Dynamic Background -->
+    <div class="matrix-bg" id="matrixBg"></div>
+    <div id="particles"></div>
+
     <div class="container">
-        <h1>About Me</h1>
-        <p><a href="index.html" class="back-link">← Back to Home</a></p>
+        <h1 class="loading">About Me</h1>
+        <p><a href="index.html" class="back-link loading">← Back to Home</a></p>
         
-        <div class="profile">
+        <div class="profile loading">
             <h2>Emre Koçay</h2>
             <p><strong>Cybersecurity Specialist & Web Developer</strong></p>
             <p>I'm an experienced cybersecurity specialist and full-stack web developer based in Istanbul. With 8+ years of experience, I specialize in modern web technologies and security solutions.</p>
         </div>
 
-        <h3>Expertise</h3>
-        <div class="skills">
+        <h3 class="loading">Expertise</h3>
+        <div class="skills loading">
             <div class="skill">
                 <h4>🔐 Cybersecurity</h4>
                 <p>Penetration Testing, VAPT</p>
@@ -81,25 +376,169 @@
             </div>
         </div>
 
-        <h3>Experience</h3>
-        <div class="profile">
-            <h4>2020 - Present: Freelance Cybersecurity Consultant</h4>
-            <p>Providing penetration testing, security audits, and web application development services. Successfully completed 50+ projects on Bionluk platform.</p>
+        <h3 class="loading">Experience</h3>
+        <div class="profile loading">
+            <div class="experience-item">
+                <h4>2020 - Present: Freelance Cybersecurity Consultant</h4>
+                <p>Providing penetration testing, security audits, and web application development services. Successfully completed 50+ projects on Bionluk platform.</p>
+            </div>
             
-            <h4>2018 - 2020: Senior Security Analyst</h4>
-            <p>Conducted comprehensive security analysis and penetration testing for enterprise clients at TechSecure Solutions.</p>
+            <div class="experience-item">
+                <h4>2018 - 2020: Senior Security Analyst</h4>
+                <p>Conducted comprehensive security analysis and penetration testing for enterprise clients at TechSecure Solutions.</p>
+            </div>
             
-            <h4>2016 - 2018: Full-Stack Web Developer</h4>
-            <p>Developed e-commerce platforms and enterprise web applications using modern web technologies at Digital Innovations.</p>
+            <div class="experience-item">
+                <h4>2016 - 2018: Full-Stack Web Developer</h4>
+                <p>Developed e-commerce platforms and enterprise web applications using modern web technologies at Digital Innovations.</p>
+            </div>
         </div>
 
-        <h3>Contact</h3>
-        <div class="profile">
-            <p>Email: emre@jerboastudio.com</p>
-            <p>LinkedIn: linkedin.com/in/emrekocay</p>
-            <p>GitHub: github.com/kocayinsec</p>
-            <p>Bionluk: bionluk.com/emrekocay</p>
+        <h3 class="loading">Contact</h3>
+        <div class="profile loading">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📧</span>
+                    <span>emre@jerboastudio.com</span>
+                </div>
+                <div class="contact-item">
+                    <span>💼</span>
+                    <span>linkedin.com/in/emrekocay</span>
+                </div>
+                <div class="contact-item">
+                    <span>💻</span>
+                    <span>github.com/kocayinsec</span>
+                </div>
+                <div class="contact-item">
+                    <span>🚀</span>
+                    <span>bionluk.com/emrekocay</span>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        // Create Matrix Rain Effect
+        function createMatrixRain() {
+            const matrixBg = document.getElementById('matrixBg');
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const charCount = 50;
+
+            for (let i = 0; i < charCount; i++) {
+                const char = document.createElement('div');
+                char.className = 'matrix-char';
+                char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                char.style.left = Math.random() * 100 + '%';
+                char.style.animationDuration = (3 + Math.random() * 5) + 's';
+                char.style.animationDelay = Math.random() * 5 + 's';
+                char.style.fontSize = (10 + Math.random() * 8) + 'px';
+                matrixBg.appendChild(char);
+            }
+
+            // Regenerate characters periodically
+            setInterval(() => {
+                const chars = matrixBg.querySelectorAll('.matrix-char');
+                chars.forEach(char => {
+                    if (Math.random() > 0.7) {
+                        char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                    }
+                });
+            }, 2000);
+        }
+
+        // Create Floating Particles
+        function createParticles() {
+            const particleContainer = document.getElementById('particles');
+            const particleCount = 20;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particleContainer.appendChild(particle);
+            }
+
+            // Add new particles periodically
+            setInterval(() => {
+                if (particleContainer.children.length < particleCount) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+                    particleContainer.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 20000);
+                }
+            }, 3000);
+        }
+
+        // Mouse parallax effect
+        function initParallax() {
+            const skills = document.querySelectorAll('.skill');
+            
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                skills.forEach((skill, index) => {
+                    const speed = (index + 1) * 0.3;
+                    const x = (mouseX - 0.5) * speed * 20;
+                    const y = (mouseY - 0.5) * speed * 20;
+                    
+                    skill.style.transform += ` translate(${x}px, ${y}px)`;
+                });
+            });
+        }
+
+        // Intersection Observer for scroll animations
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.loading').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            createMatrixRain();
+            createParticles();
+            initParallax();
+            initScrollAnimations();
+        });
+
+        // Add dynamic title typing effect
+        function typeTitle() {
+            const title = document.querySelector('h1');
+            const originalText = 'About Me';
+            title.textContent = '';
+            
+            let i = 0;
+            const typeInterval = setInterval(() => {
+                title.textContent += originalText.charAt(i);
+                i++;
+                if (i >= originalText.length) {
+                    clearInterval(typeInterval);
+                }
+            }, 150);
+        }
+
+        // Start typing effect after page load
+        setTimeout(typeTitle, 1000);
+    </script>
 </body>
 </html>
