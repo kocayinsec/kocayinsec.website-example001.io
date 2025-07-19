@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emre Koçay - Web Developer Portfolio</title>
+    <title>Jerboa Studio's - Dynamic Web Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,6 +13,9 @@
             --white: #FFFFFF;
             --gray-light: #E5E7EB;
             --gray-medium: #9CA3AF;
+            --purple-deep: #2D1B69;
+            --purple-light: #4C2A85;
+            --gold: #FFD700;
         }
 
         * {
@@ -23,198 +26,595 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: var(--primary-dark);
+            background: linear-gradient(135deg, #0A0E27 0%, #1a1f3a 50%, #2D1B69 100%);
             color: var(--white);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
+        /* Dynamic Starfield Background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at center, #1a1f3a 0%, #0A0E27 50%, #000 100%);
+        }
+
+        .star {
+            position: absolute;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: 0 0 6px currentColor;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .star.large {
+            width: 4px;
+            height: 4px;
+            box-shadow: 0 0 12px var(--gold), 0 0 24px var(--gold);
+            animation: pulseStar 4s ease-in-out infinite;
+        }
+
+        .star.medium {
+            width: 2px;
+            height: 2px;
+            box-shadow: 0 0 8px var(--accent-cyan), 0 0 16px var(--accent-cyan);
+        }
+
+        .star.small {
+            width: 1px;
+            height: 1px;
+            box-shadow: 0 0 4px var(--white);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes pulseStar {
+            0%, 100% { 
+                opacity: 0.6; 
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 12px var(--gold), 0 0 24px var(--gold);
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.5) rotate(180deg);
+                box-shadow: 0 0 20px var(--gold), 0 0 40px var(--gold);
+            }
+        }
+
+        /* Floating Orbs */
+        .floating-orb {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, var(--accent-cyan), transparent);
+            opacity: 0.3;
+            animation: floatOrb 15s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 5s;
+            background: radial-gradient(circle at 30% 30%, var(--success-green), transparent);
+        }
+
+        .orb-3 {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            left: 60%;
+            animation-delay: 10s;
+            background: radial-gradient(circle at 30% 30%, var(--gold), transparent);
+        }
+
+        @keyframes floatOrb {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+                opacity: 0.3;
+            }
+            33% {
+                transform: translateY(-30px) translateX(20px) rotate(120deg);
+                opacity: 0.6;
+            }
+            66% {
+                transform: translateY(20px) translateX(-15px) rotate(240deg);
+                opacity: 0.4;
+            }
+        }
+
+        /* Content Containers */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         .header {
             text-align: center;
-            padding: 4rem 0;
-            background: linear-gradient(135deg, #0A0E27 0%, #1a1f3a 100%);
+            padding: 6rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+            z-index: -1;
         }
 
         .header h1 {
             font-family: 'Inter', sans-serif;
-            font-size: 3rem;
+            font-size: clamp(2.5rem, 6vw, 4rem);
             font-weight: 700;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--white) 0%, var(--accent-cyan) 100%);
+            background: linear-gradient(135deg, var(--white) 0%, var(--accent-cyan) 50%, var(--gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 60px rgba(255, 215, 0, 0.3);
+            }
         }
 
         .header p {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             color: var(--gray-light);
             margin-bottom: 2rem;
+            opacity: 0.9;
         }
 
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: var(--success-green);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+                transform: scale(1.05);
+            }
+        }
+
+        /* Demo Cards */
         .demos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
-            margin: 3rem 0;
+            margin: 4rem 0;
         }
 
         .demo-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(0, 212, 255, 0.05) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .demo-card:hover::before {
+            opacity: 1;
         }
 
         .demo-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.02);
             border-color: var(--accent-cyan);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            box-shadow: 
+                0 25px 50px rgba(0, 212, 255, 0.2),
+                0 0 40px rgba(0, 212, 255, 0.1);
         }
 
         .demo-card h3 {
             font-family: 'Inter', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             margin-bottom: 1rem;
             color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .demo-card p {
             margin-bottom: 1.5rem;
             color: var(--gray-light);
+            line-height: 1.7;
         }
 
         .demo-button {
             display: inline-block;
-            padding: 12px 24px;
+            padding: 14px 28px;
             background: linear-gradient(135deg, var(--accent-cyan), var(--success-green));
             color: var(--primary-dark);
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 25px;
             font-weight: 600;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .demo-button:hover::before {
+            left: 100%;
         }
 
         .demo-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 212, 255, 0.4);
         }
 
         .features {
             list-style: none;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
 
         .features li {
-            padding: 0.5rem 0;
+            padding: 0.75rem 0;
             color: var(--gray-light);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
         .features li::before {
             content: "✓";
             color: var(--success-green);
             font-weight: bold;
-            margin-right: 0.5rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(0, 255, 136, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
         }
 
+        /* Footer */
         .footer {
             text-align: center;
-            padding: 3rem 0;
+            padding: 4rem 0;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 3rem;
+            margin-top: 4rem;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .footer p {
             color: var(--gray-medium);
+            margin-bottom: 0.5rem;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            border-radius: 16px;
-            font-size: 0.8rem;
-            color: var(--success-green);
-            margin-bottom: 1rem;
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
         }
 
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
             
             .demos-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
             
             .container {
                 padding: 1rem;
             }
+
+            .nav-links {
+                display: none;
+            }
+
+            .header {
+                padding: 8rem 0 4rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .loading:nth-child(1) { animation-delay: 0.2s; }
+        .loading:nth-child(2) { animation-delay: 0.4s; }
+        .loading:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Dynamic Starfield Background -->
+    <div class="starfield" id="starfield">
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+        <div class="floating-orb orb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="logo">Jerboa Studio's</div>
+            <ul class="nav-links">
+                <li><a href="#demos">Demos</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
     <div class="header">
         <div class="container">
-            <h1>Emre Koçay</h1>
-            <p>Web Developer & IT Consultant</p>
-            <div class="badge">🚀 CANLI DEMO SİTELERİ</div>
+            <h1>Jerboa Studio's</h1>
+            <p>Dynamic Web Experiences & Interactive Solutions</p>
+            <div class="badge">🚀 LIVE INTERACTIVE DEMOS</div>
         </div>
     </div>
 
-    <div class="container">
+    <!-- Demos Section -->
+    <div class="container" id="demos">
         <div class="demos-grid">
-            <div class="demo-card">
-                <h3>🎭 Hero Section</h3>
-                <p>Animasyonlu typing effect ve modern tasarım ile etkileyici giriş sayfası.</p>
+            <div class="demo-card loading">
+                <h3>🎭 Dynamic Hero Section</h3>
+                <p>Experience advanced animations with custom cursor tracking, 3D geometric shapes, and interactive particle explosions.</p>
                 <ul class="features">
-                    <li>Animasyonlu yazı efekti</li>
-                    <li>Floating parçacıklar</li>
-                    <li>Responsive tasarım</li>
-                    <li>Interactive butonlar</li>
+                    <li>Custom cursor with smooth trailing</li>
+                    <li>3D floating geometric shapes</li>
+                    <li>Glitch text effects with shadow layers</li>
+                    <li>Interactive click explosions</li>
                 </ul>
-                <a href="hero_section.html" class="demo-button">Canlı Demo →</a>
+                <a href="hero_section.html" class="demo-button">Experience Demo →</a>
             </div>
 
-            <div class="demo-card">
-                <h3>📊 Stats Dashboard</h3>
-                <p>Gerçek zamanlı istatistikler ve animasyonlu sayaçlar ile profesyonel dashboard.</p>
+            <div class="demo-card loading">
+                <h3>📊 Real-time Analytics Dashboard</h3>
+                <p>Professional dashboard with Chart.js integration, live data feeds, and interactive visualizations.</p>
                 <ul class="features">
-                    <li>Animasyonlu sayaçlar</li>
-                    <li>Canlı güncellemeler</li>
-                    <li>Progress bar animasyonları</li>
-                    <li>Hover efektleri</li>
+                    <li>Live Chart.js data visualization</li>
+                    <li>Rotating progress circles</li>
+                    <li>Real-time activity feed</li>
+                    <li>Interactive hover transformations</li>
                 </ul>
-                <a href="stats_dashboard.html" class="demo-button">Canlı Demo →</a>
+                <a href="stats_dashboard.html" class="demo-button">View Dashboard →</a>
             </div>
 
-            <div class="demo-card">
-                <h3>💰 Pricing Calculator</h3>
-                <p>İnteraktif fiyat hesaplayıcı ile anında maliyet hesaplama sistemi.</p>
+            <div class="demo-card loading">
+                <h3>💰 Interactive Pricing Calculator</h3>
+                <p>Dynamic price calculation with smooth animations, feature selection, and real-time breakdown updates.</p>
                 <ul class="features">
-                    <li>Dinamik fiyat hesaplama</li>
-                    <li>Özellik seçim sistemi</li>
-                    <li>Teslimat süresi gösterimi</li>
-                    <li>Detaylı fiyat dökümü</li>
+                    <li>Real-time price calculations</li>
+                    <li>Animated feature selection</li>
+                    <li>Dynamic delivery estimation</li>
+                    <li>Interactive cost breakdown</li>
                 </ul>
-                <a href="pricing_calculator.html" class="demo-button">Canlı Demo →</a>
+                <a href="pricing_calculator.html" class="demo-button">Calculate Now →</a>
             </div>
         </div>
     </div>
 
+    <!-- Footer -->
     <div class="footer">
         <div class="container">
-            <p>&copy; 2024 Emre Koçay. Tüm hakları saklıdır.</p>
-            <p>Web Developer & IT Consultant | 15+ Yıllık Deneyim</p>
+            <p>&copy; 2024 Jerboa Studio's. All rights reserved.</p>
+            <p>Crafting Dynamic Web Experiences | Professional Interactive Solutions</p>
         </div>
     </div>
+
+    <script>
+        // Create Dynamic Starfield
+        function createStarfield() {
+            const starfield = document.getElementById('starfield');
+            const starCount = 150;
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random star types
+                const rand = Math.random();
+                if (rand > 0.95) {
+                    star.classList.add('large');
+                } else if (rand > 0.8) {
+                    star.classList.add('medium');
+                } else {
+                    star.classList.add('small');
+                }
+
+                // Random positioning
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                
+                // Random animation delay
+                star.style.animationDelay = Math.random() * 3 + 's';
+                
+                // Random animation duration
+                star.style.animationDuration = (2 + Math.random() * 3) + 's';
+
+                starfield.appendChild(star);
+            }
+        }
+
+        // Mouse parallax effect for orbs
+        function initParallax() {
+            const orbs = document.querySelectorAll('.floating-orb');
+            
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                orbs.forEach((orb, index) => {
+                    const speed = (index + 1) * 0.5;
+                    const x = (mouseX - 0.5) * speed * 50;
+                    const y = (mouseY - 0.5) * speed * 50;
+                    
+                    orb.style.transform = `translate(${x}px, ${y}px)`;
+                });
+            });
+        }
+
+        // Smooth scroll for navigation
+        function initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            createStarfield();
+            initParallax();
+            initSmoothScroll();
+        });
+
+        // Add more stars dynamically on scroll
+        let lastScrollY = 0;
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastScrollY && Math.random() > 0.95) {
+                createNewStar();
+            }
+            lastScrollY = currentScrollY;
+        });
+
+        function createNewStar() {
+            const starfield = document.getElementById('starfield');
+            const star = document.createElement('div');
+            star.className = 'star small';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = '0%';
+            star.style.animationDuration = '1s';
+            
+            starfield.appendChild(star);
+            
+            // Remove after animation
+            setTimeout(() => {
+                star.remove();
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
