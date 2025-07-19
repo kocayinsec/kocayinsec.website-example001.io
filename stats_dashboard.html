@@ -170,33 +170,7 @@
                 inset 0 0 20px rgba(0, 212, 255, 0.1);
         }
 
-        /* Holographic Number Display */
-        .holographic-number {
-            position: relative;
-            display: inline-block;
-        }
-
-        .holographic-number::before {
-            content: attr(data-value);
-            position: absolute;
-            top: 0;
-            left: 0;
-            color: rgba(0, 212, 255, 0.5);
-            transform: translateX(2px) translateY(2px);
-            z-index: -1;
-            filter: blur(1px);
-        }
-
-        .holographic-number::after {
-            content: attr(data-value);
-            position: absolute;
-            top: 0;
-            left: 0;
-            color: rgba(0, 255, 136, 0.3);
-            transform: translateX(-2px) translateY(-2px);
-            z-index: -2;
-            filter: blur(2px);
-        }
+        /* Removed holographic number display effects */
 
         .stat-icon {
             font-size: 3rem;
@@ -557,19 +531,19 @@
         <div class="dashboard-grid">
             <div class="stat-card loading">
                 <div class="stat-icon">😊</div>
-                <div class="stat-number holographic-number" data-count="43" data-value="43">0</div>
+                <div class="stat-number" data-count="43" data-value="43">0</div>
                 <div class="stat-label">Happy Clients</div>
             </div>
             
             <div class="stat-card loading">
                 <div class="stat-icon">⚡</div>
-                <div class="stat-number holographic-number" data-count="2.3" data-decimal="true" data-value="2.3">0.0</div>
+                <div class="stat-number" data-count="2.3" data-decimal="true" data-value="2.3">0.0</div>
                 <div class="stat-label">Days Average Delivery</div>
             </div>
             
             <div class="stat-card loading">
                 <div class="stat-icon">🚀</div>
-                <div class="stat-number holographic-number" data-count="98" data-value="98">0</div>
+                <div class="stat-number" data-count="98" data-value="98">0</div>
                 <div class="stat-label">PageSpeed Score</div>
                 <div class="progress-circle">
                     <span>98%</span>
@@ -578,13 +552,13 @@
             
             <div class="stat-card loading">
                 <div class="stat-icon">🔐</div>
-                <div class="stat-number holographic-number" data-count="127" data-value="127">0</div>
+                <div class="stat-number" data-count="127" data-value="127">0</div>
                 <div class="stat-label">Security Scans</div>
             </div>
             
             <div class="stat-card loading">
                 <div class="stat-icon">💻</div>
-                <div class="stat-number holographic-number" data-count="89" data-value="89">0</div>
+                <div class="stat-number" data-count="89" data-value="89">0</div>
                 <div class="stat-label">Code Quality</div>
             </div>
             
