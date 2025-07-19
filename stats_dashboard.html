@@ -32,6 +32,63 @@
             color: var(--white);
             min-height: 100vh;
             padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Advanced Background Effects */
+        .dashboard-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .data-stream {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(180deg, transparent, var(--accent-cyan), transparent);
+            animation: data-flow 4s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes data-flow {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .holographic-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-pulse 8s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes grid-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
         }
 
         .stats-dashboard {
@@ -69,6 +126,22 @@
             overflow: hidden;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .stat-card:hover::after {
+            left: 100%;
         }
 
         .stat-card::before {
@@ -89,9 +162,40 @@
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateY(-10px) scale(1.02);
             border-color: var(--accent-cyan);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            box-shadow: 
+                0 25px 50px rgba(0, 212, 255, 0.4),
+                0 0 100px rgba(0, 212, 255, 0.2),
+                inset 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+
+        /* Holographic Number Display */
+        .holographic-number {
+            position: relative;
+            display: inline-block;
+        }
+
+        .holographic-number::before {
+            content: attr(data-value);
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: rgba(0, 212, 255, 0.5);
+            transform: translateX(2px) translateY(2px);
+            z-index: -1;
+            filter: blur(1px);
+        }
+
+        .holographic-number::after {
+            content: attr(data-value);
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: rgba(0, 255, 136, 0.3);
+            transform: translateX(-2px) translateY(-2px);
+            z-index: -2;
+            filter: blur(2px);
         }
 
         .stat-icon {
@@ -172,6 +276,30 @@
             background: var(--success-green);
             border-radius: 50%;
             animation: pulse 1.5s infinite;
+            position: relative;
+        }
+
+        .live-dot::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--success-green), transparent);
+            animation: ripple 2s infinite;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
         }
 
         @keyframes pulse {
@@ -417,88 +545,113 @@
     </style>
 </head>
 <body>
+    <!-- Advanced Dashboard Background -->
+    <div class="dashboard-bg">
+        <div class="holographic-grid"></div>
+        <div id="dataStreams"></div>
+    </div>
+
     <section class="stats-dashboard">
-        <h2 class="section-title">Canlı İstatistikler</h2>
+        <h2 class="section-title">Live Analytics Dashboard</h2>
         
         <div class="dashboard-grid">
             <div class="stat-card loading">
                 <div class="stat-icon">😊</div>
-                <div class="stat-number" data-count="43">0</div>
-                <div class="stat-label">Mutlu Müşteri</div>
+                <div class="stat-number holographic-number" data-count="43" data-value="43">0</div>
+                <div class="stat-label">Happy Clients</div>
             </div>
             
             <div class="stat-card loading">
                 <div class="stat-icon">⚡</div>
-                <div class="stat-number" data-count="2.3" data-decimal="true">0.0</div>
-                <div class="stat-label">Gün Ortalama Teslimat</div>
+                <div class="stat-number holographic-number" data-count="2.3" data-decimal="true" data-value="2.3">0.0</div>
+                <div class="stat-label">Days Average Delivery</div>
             </div>
             
             <div class="stat-card loading">
                 <div class="stat-icon">🚀</div>
-                <div class="stat-number" data-count="98">0</div>
-                <div class="stat-label">PageSpeed Skoru</div>
+                <div class="stat-number holographic-number" data-count="98" data-value="98">0</div>
+                <div class="stat-label">PageSpeed Score</div>
                 <div class="progress-circle">
                     <span>98%</span>
                 </div>
+            </div>
+            
+            <div class="stat-card loading">
+                <div class="stat-icon">🔐</div>
+                <div class="stat-number holographic-number" data-count="127" data-value="127">0</div>
+                <div class="stat-label">Security Scans</div>
+            </div>
+            
+            <div class="stat-card loading">
+                <div class="stat-icon">💻</div>
+                <div class="stat-number holographic-number" data-count="89" data-value="89">0</div>
+                <div class="stat-label">Code Quality</div>
             </div>
             
             <div class="stat-card live loading glow-effect">
                 <div class="stat-icon">📊</div>
                 <div class="stat-number">
                     <span class="live-dot"></span>
-                    CANLI
+                    LIVE
                 </div>
-                <div class="stat-label">Son 24 Saatte 3 Proje</div>
+                <div class="stat-label">3 Projects in Last 24h</div>
             </div>
         </div>
 
         <div class="charts-section">
             <div class="chart-card">
-                <h3 class="chart-title">Proje Tamamlama Grafiği</h3>
+                <h3 class="chart-title">📈 Project Performance Analytics</h3>
                 <div class="chart-container">
                     <canvas id="projectChart"></canvas>
                 </div>
             </div>
             
             <div class="chart-card">
-                <h3 class="chart-title">Müşteri Memnuniyeti</h3>
+                <h3 class="chart-title">🎯 Client Satisfaction Metrics</h3>
                 <div class="chart-container">
                     <canvas id="satisfactionChart"></canvas>
                 </div>
             </div>
             
             <div class="chart-card">
-                <h3 class="chart-title">Teknoloji Kullanımı</h3>
+                <h3 class="chart-title">⚡ Technology Stack Usage</h3>
                 <div class="chart-container">
                     <canvas id="techChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3 class="chart-title">🔐 Security Assessment Overview</h3>
+                <div class="chart-container">
+                    <canvas id="securityChart"></canvas>
                 </div>
             </div>
         </div>
 
         <div class="activity-feed">
-            <h3 class="chart-title">Canlı Aktiviteler</h3>
+            <h3 class="chart-title">🔴 Live Activity Stream</h3>
             <div id="activityList">
                 <div class="activity-item">
-                    <div class="activity-icon success">✅</div>
+                    <div class="activity-icon success">🔐</div>
                     <div class="activity-content">
-                        <div class="activity-title">E-ticaret projesi tamamlandı</div>
-                        <div class="activity-time">2 dakika önce</div>
+                        <div class="activity-title">Penetration test completed successfully</div>
+                        <div class="activity-time">2 minutes ago</div>
                     </div>
                 </div>
                 
                 <div class="activity-item">
-                    <div class="activity-icon info">📊</div>
+                    <div class="activity-icon info">🛡️</div>
                     <div class="activity-content">
-                        <div class="activity-title">Yeni müşteri teklifi alındı</div>
-                        <div class="activity-time">15 dakika önce</div>
+                        <div class="activity-title">New security audit initiated</div>
+                        <div class="activity-time">15 minutes ago</div>
                     </div>
                 </div>
                 
                 <div class="activity-item">
-                    <div class="activity-icon warning">⚠️</div>
+                    <div class="activity-icon warning">⚡</div>
                     <div class="activity-content">
-                        <div class="activity-title">Server bakımı planlandı</div>
-                        <div class="activity-time">1 saat önce</div>
+                        <div class="activity-title">Web application deployed securely</div>
+                        <div class="activity-time">1 hour ago</div>
                     </div>
                 </div>
             </div>
@@ -527,6 +680,76 @@
             window.requestAnimationFrame(step);
         }
 
+        // Create Data Streams Background
+        function createDataStreams() {
+            const container = document.getElementById('dataStreams');
+            const streamCount = 15;
+
+            for (let i = 0; i < streamCount; i++) {
+                const stream = document.createElement('div');
+                stream.className = 'data-stream';
+                stream.style.left = Math.random() * 100 + '%';
+                stream.style.height = Math.random() * 200 + 100 + 'px';
+                stream.style.animationDelay = Math.random() * 4 + 's';
+                stream.style.animationDuration = (3 + Math.random() * 3) + 's';
+                container.appendChild(stream);
+            }
+
+            // Regenerate streams periodically
+            setInterval(() => {
+                if (container.children.length < streamCount) {
+                    const stream = document.createElement('div');
+                    stream.className = 'data-stream';
+                    stream.style.left = Math.random() * 100 + '%';
+                    stream.style.height = Math.random() * 200 + 100 + 'px';
+                    stream.style.animationDuration = (3 + Math.random() * 3) + 's';
+                    container.appendChild(stream);
+                    
+                    setTimeout(() => stream.remove(), 6000);
+                }
+            }, 2000);
+        }
+
+        // Enhanced 3D Card Interaction
+        function init3DCards() {
+            const cards = document.querySelectorAll('.stat-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 10;
+                    const rotateY = (centerX - x) / 10;
+                    
+                    card.style.transform = `
+                        perspective(1000px) 
+                        rotateX(${rotateX}deg) 
+                        rotateY(${rotateY}deg) 
+                        translateY(-10px) 
+                        scale(1.02)
+                    `;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+                });
+            });
+        }
+
+        // Update Holographic Numbers
+        function updateHolographicNumbers() {
+            const numbers = document.querySelectorAll('.holographic-number');
+            numbers.forEach(number => {
+                const currentValue = number.textContent;
+                number.setAttribute('data-value', currentValue);
+            });
+        }
+
         // Initialize Charts
         function initCharts() {
             // Project Completion Chart
@@ -534,9 +757,9 @@
             new Chart(projectCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran'],
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                     datasets: [{
-                        label: 'Tamamlanan Projeler',
+                        label: 'Completed Projects',
                         data: [12, 19, 8, 15, 22, 18],
                         borderColor: '#00D4FF',
                         backgroundColor: 'rgba(0, 212, 255, 0.1)',
@@ -581,7 +804,7 @@
             new Chart(satisfactionCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Mükemmel', 'Çok İyi', 'İyi', 'Orta'],
+                    labels: ['Excellent', 'Very Good', 'Good', 'Average'],
                     datasets: [{
                         data: [70, 20, 8, 2],
                         backgroundColor: ['#00FF88', '#00D4FF', '#FFB800', '#FF4444']
@@ -607,7 +830,7 @@
                 data: {
                     labels: ['React', 'Node.js', 'WordPress', 'Vue.js', 'PHP'],
                     datasets: [{
-                        label: 'Kullanım Oranı (%)',
+                        label: 'Usage Rate (%)',
                         data: [85, 70, 60, 45, 30],
                         backgroundColor: ['#00D4FF', '#00FF88', '#FFB800', '#FF4444', '#9CA3AF']
                     }]
@@ -643,17 +866,63 @@
                     }
                 }
             });
+
+            // Security Assessment Chart
+            const securityCtx = document.getElementById('securityChart').getContext('2d');
+            new Chart(securityCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Penetration Testing', 'VAPT', 'Code Review', 'Network Security', 'Web App Security', 'Mobile Security'],
+                    datasets: [{
+                        label: 'Security Expertise Level',
+                        data: [95, 88, 92, 85, 98, 78],
+                        borderColor: '#00FF88',
+                        backgroundColor: 'rgba(0, 255, 136, 0.2)',
+                        pointBackgroundColor: '#00FF88',
+                        pointBorderColor: '#00D4FF',
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#E5E7EB'
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#E5E7EB'
+                            },
+                            pointLabels: {
+                                color: '#E5E7EB'
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         // Activity Feed Updates
         function updateActivityFeed() {
             const activities = [
-                { icon: '✅', type: 'success', title: 'E-ticaret projesi tamamlandı', time: '2 dakika önce' },
-                { icon: '🚀', type: 'info', title: 'Yeni proje başlatıldı', time: '5 dakika önce' },
-                { icon: '📊', type: 'info', title: 'Müşteri teklifi alındı', time: '15 dakika önce' },
-                { icon: '⚠️', type: 'warning', title: 'Server bakımı planlandı', time: '1 saat önce' },
-                { icon: '💰', type: 'success', title: 'Ödeme alındı', time: '2 saat önce' },
-                { icon: '🎯', type: 'info', title: 'Proje milestone tamamlandı', time: '3 saat önce' }
+                { icon: '🔐', type: 'success', title: 'Penetration test completed successfully', time: '2 minutes ago' },
+                { icon: '🛡️', type: 'info', title: 'New security audit initiated', time: '5 minutes ago' },
+                { icon: '⚡', type: 'success', title: 'Web application deployed securely', time: '15 minutes ago' },
+                { icon: '🔍', type: 'info', title: 'Vulnerability assessment in progress', time: '45 minutes ago' },
+                { icon: '💻', type: 'success', title: 'Code review completed', time: '1 hour ago' },
+                { icon: '🚀', type: 'info', title: 'New client project started', time: '2 hours ago' },
+                { icon: '📊', type: 'success', title: 'Security report generated', time: '3 hours ago' },
+                { icon: '🎯', type: 'info', title: 'OWASP compliance verified', time: '4 hours ago' }
             ];
 
             let currentIndex = 0;
@@ -713,11 +982,14 @@
         function updateLiveStats() {
             const liveCard = document.querySelector('.stat-card.live');
             const messages = [
-                'Son 24 Saatte 3 Proje',
-                'Şu An 2 Proje Üzerinde',
-                'Bugün 1 Proje Tamamlandı',
-                'Aktif Müşteri Sayısı: 12',
-                'Bekleyen Teklifler: 5'
+                '3 Security Projects in Last 24h',
+                'Currently Working on 2 VAPT Assessments',
+                '1 Penetration Test Completed Today',
+                'Active Security Clients: 12',
+                'Pending Vulnerability Assessments: 5',
+                'Security Code Reviews in Queue: 3',
+                'OWASP Compliance Checks: Active',
+                'Network Security Monitoring: Live'
             ];
             
             let currentIndex = 0;
@@ -735,9 +1007,14 @@
 
         // Initialize everything
         document.addEventListener('DOMContentLoaded', () => {
+            createDataStreams();
+            init3DCards();
             setTimeout(initCharts, 1000);
             setTimeout(updateLiveStats, 2000);
             setTimeout(updateActivityFeed, 3000);
+            
+            // Initialize holographic number updates
+            setInterval(updateHolographicNumbers, 5000);
         });
     </script>
 </body>
