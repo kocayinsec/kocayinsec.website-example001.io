@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Pricing Calculator - Emre Koçay</title>
+    <title>Fiyat Hesaplayıcı - Jerboa Studio's</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,9 +13,9 @@
             --white: #FFFFFF;
             --gray-light: #E5E7EB;
             --gray-medium: #9CA3AF;
-            --gray-dark: #4B5563;
-            --card-bg: rgba(255, 255, 255, 0.02);
-            --card-border: rgba(255, 255, 255, 0.1);
+            --purple-accent: #9333EA;
+            --pink-accent: #EC4899;
+            --yellow-accent: #F59E0B;
         }
 
         * {
@@ -26,136 +26,336 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0A0E27 0%, #1a1f3a 100%);
+            background: #0A0E27;
             color: var(--white);
             min-height: 100vh;
-            padding: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
         }
 
+        /* Dynamic Mesh Gradient Background */
+        .mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 255, 136, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 60% 80%, rgba(236, 72, 153, 0.25) 0%, transparent 50%),
+                linear-gradient(135deg, #0A0E27 0%, #1a1f3a 100%);
+            animation: mesh-float 20s ease-in-out infinite;
+            filter: blur(40px);
+        }
+
+        @keyframes mesh-float {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+            }
+            25% {
+                transform: scale(1.1) rotate(5deg);
+            }
+            50% {
+                transform: scale(1.05) rotate(-3deg);
+            }
+            75% {
+                transform: scale(1.08) rotate(2deg);
+            }
+        }
+
+        /* Geometric Pattern Overlay */
+        .geometric-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background-image: 
+                linear-gradient(45deg, transparent 40%, rgba(0, 212, 255, 0.1) 50%, transparent 60%),
+                linear-gradient(-45deg, transparent 40%, rgba(147, 51, 234, 0.1) 50%, transparent 60%);
+            background-size: 60px 60px;
+            animation: pattern-shift 15s linear infinite;
+        }
+
+        @keyframes pattern-shift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .float-element {
+            position: absolute;
+            opacity: 0.6;
+            animation: float-drift 25s ease-in-out infinite;
+        }
+
+        .element-1 {
+            top: 10%;
+            left: 5%;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, var(--accent-cyan), transparent);
+            border-radius: 20% 80% 80% 20%;
+            animation-delay: 0s;
+        }
+
+        .element-2 {
+            top: 70%;
+            right: 10%;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--purple-accent), transparent);
+            border-radius: 50% 20% 50% 20%;
+            animation-delay: -8s;
+        }
+
+        .element-3 {
+            bottom: 20%;
+            left: 15%;
+            width: 60px;
+            height: 120px;
+            background: linear-gradient(90deg, var(--success-green), transparent);
+            border-radius: 80% 20% 80% 20%;
+            animation-delay: -15s;
+        }
+
+        @keyframes float-drift {
+            0%, 100% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            25% {
+                transform: translateY(-30px) translateX(20px) rotate(90deg);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(20px) translateX(-15px) rotate(180deg);
+                opacity: 0.4;
+            }
+            75% {
+                transform: translateY(-10px) translateX(25px) rotate(270deg);
+                opacity: 0.7;
+            }
+        }
+
+        /* Main Container */
         .pricing-calculator {
             width: 100%;
-            max-width: 800px;
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         .section-title {
             font-family: 'Inter', sans-serif;
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 700;
             text-align: center;
             margin-bottom: 3rem;
-            background: linear-gradient(135deg, var(--white) 0%, var(--accent-cyan) 100%);
+            position: relative;
+            letter-spacing: -0.02em;
+        }
+
+        .title-text {
+            background: linear-gradient(135deg, var(--white) 0%, var(--accent-cyan) 25%, var(--purple-accent) 50%, var(--pink-accent) 75%, var(--white) 100%);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: gradient-shift 8s ease infinite;
         }
 
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glass morphism calculator */
         .calculator-container {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .calculator-options {
-            margin-bottom: 2rem;
+        .calculator-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--purple-accent), var(--pink-accent));
+            border-radius: 24px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.6s ease;
         }
 
+        .calculator-container:hover::before {
+            opacity: 0.8;
+            animation: border-dance 3s linear infinite;
+        }
+
+        @keyframes border-dance {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Options styling */
         .option-group {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            position: relative;
         }
 
         .option-group label {
             display: block;
             font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
             color: var(--gray-light);
+            transition: color 0.3s ease;
+        }
+
+        .option-group:hover label {
+            color: var(--accent-cyan);
+        }
+
+        /* Custom Select */
+        .custom-select {
+            position: relative;
+            width: 100%;
         }
 
         select {
             width: 100%;
-            padding: 12px 16px;
+            padding: 16px 20px;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             color: var(--white);
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            appearance: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .custom-select::after {
+            content: '▼';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-cyan);
+            pointer-events: none;
+            transition: transform 0.3s ease;
         }
 
         select:hover {
             border-color: var(--accent-cyan);
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(0, 212, 255, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.2);
         }
 
         select:focus {
             outline: none;
             border-color: var(--accent-cyan);
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+            box-shadow: 
+                0 0 0 4px rgba(0, 212, 255, 0.1),
+                0 10px 40px rgba(0, 212, 255, 0.3);
         }
 
-        select option {
-            background: var(--primary-dark);
-            color: var(--white);
-        }
-
+        /* Checkbox Group */
         .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .checkbox-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .checkbox-wrapper:hover {
+            transform: translateY(-3px) scale(1.02);
         }
 
         .checkbox-group label {
             display: flex;
             align-items: center;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             cursor: pointer;
-            font-weight: 400;
-            font-size: 1rem;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin: 0;
         }
 
-        .checkbox-group label:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.1);
+        .checkbox-group label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .checkbox-group label:hover::before {
+            left: 100%;
         }
 
         .checkbox-group input[type="checkbox"] {
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
-            margin-right: 12px;
+            border-radius: 6px;
+            margin-right: 14px;
             cursor: pointer;
             position: relative;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .checkbox-group input[type="checkbox"]:checked {
-            background: var(--accent-cyan);
-            border-color: var(--accent-cyan);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--success-green));
+            border-color: transparent;
+            transform: rotate(360deg) scale(1.2);
         }
 
         .checkbox-group input[type="checkbox"]:checked::after {
@@ -166,260 +366,332 @@
             transform: translate(-50%, -50%);
             color: var(--primary-dark);
             font-weight: bold;
+            font-size: 14px;
+            animation: check-pop 0.3s ease;
         }
 
+        @keyframes check-pop {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.3); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Result Display */
         .calculator-result {
-            background: rgba(0, 212, 255, 0.05);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            border-radius: 12px;
-            padding: 2rem;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(147, 51, 234, 0.05));
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            transform: translateZ(20px);
+        }
+
+        .calculator-result::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+            animation: pulse-rotate 8s linear infinite;
+        }
+
+        @keyframes pulse-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .total-price {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
         }
 
-        .total-price .label {
+        .price-label {
             font-size: 1rem;
             color: var(--gray-medium);
             display: block;
             margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
-        .total-price .price {
+        .price-display {
             font-family: 'Inter', sans-serif;
-            font-size: 3rem;
+            font-size: clamp(2.5rem, 6vw, 4rem);
             font-weight: 700;
-            color: var(--accent-cyan);
-            display: block;
-            animation: countUp 0.6s ease-out;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--success-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            position: relative;
+            text-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
         }
 
-        @keyframes countUp {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .price-display.updating {
+            animation: price-update 0.6s ease;
         }
 
-        .delivery-time {
-            margin-bottom: 2rem;
+        @keyframes price-update {
+            0% { transform: scale(1) rotateX(0); opacity: 1; }
+            50% { transform: scale(1.2) rotateX(180deg); opacity: 0.5; }
+            100% { transform: scale(1) rotateX(360deg); opacity: 1; }
         }
 
-        .delivery-time .label {
-            font-size: 0.9rem;
-            color: var(--gray-medium);
-            margin-right: 0.5rem;
-        }
-
-        .delivery-time .time {
-            font-weight: 500;
-            color: var(--success-green);
-        }
-
+        /* CTA Button */
         .btn-primary {
             width: 100%;
-            padding: 16px 32px;
-            font-size: 1.1rem;
+            padding: 20px 40px;
+            font-size: 1.2rem;
             font-weight: 600;
             border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--success-green));
-            color: var(--primary-dark);
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--purple-accent));
+            color: var(--white);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2rem;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 
+                0 20px 40px rgba(0, 212, 255, 0.4),
+                0 0 80px rgba(147, 51, 234, 0.3);
         }
 
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        /* Feature tags */
+        /* Feature Tags */
         .feature-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            justify-content: center;
         }
 
         .feature-tag {
-            display: inline-block;
-            padding: 4px 12px;
+            padding: 8px 16px;
             background: rgba(0, 255, 136, 0.1);
             border: 1px solid rgba(0, 255, 136, 0.3);
-            border-radius: 16px;
-            font-size: 0.85rem;
-            color: var(--success-green);
-        }
-
-        /* Pricing breakdown */
-        .pricing-breakdown {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             font-size: 0.9rem;
-            color: var(--gray-light);
-            text-align: left;
+            color: var(--success-green);
+            transition: all 0.3s ease;
+            cursor: default;
         }
 
-        .breakdown-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
+        .feature-tag:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
         }
 
-        .breakdown-item.total {
-            font-weight: 600;
-            color: var(--white);
-            margin-top: 0.5rem;
-            padding-top: 0.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        /* Special Offer Badge */
+        .savings-badge {
+            position: absolute;
+            top: -15px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--success-green), var(--yellow-accent));
+            color: var(--primary-dark);
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transform: rotate(-5deg);
+            animation: badge-bounce 2s ease-in-out infinite;
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        @keyframes badge-bounce {
+            0%, 100% { transform: rotate(-5deg) scale(1); }
+            50% { transform: rotate(-5deg) scale(1.1); }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .section-title {
-                font-size: 2rem;
+            .pricing-calculator {
+                padding: 1rem;
             }
             
             .calculator-container {
-                padding: 1.5rem;
+                padding: 2rem 1.5rem;
             }
             
-            .total-price .price {
-                font-size: 2.5rem;
-            }
-        }
-
-        /* Special offer badge */
-        .special-offer {
-            position: absolute;
-            top: -10px;
-            right: 20px;
-            background: var(--success-green);
-            color: var(--primary-dark);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
+            .checkbox-group {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Dynamic Background -->
+    <div class="mesh-bg"></div>
+    <div class="geometric-pattern"></div>
+    <div class="floating-elements">
+        <div class="float-element element-1"></div>
+        <div class="float-element element-2"></div>
+        <div class="float-element element-3"></div>
+    </div>
+
     <section class="pricing-calculator">
-        <h2 class="section-title">Fiyat Hesaplayıcı</h2>
-        <div class="calculator-container" style="position: relative;">
-            <span class="special-offer">%20 İNDİRİM</span>
+        <h2 class="section-title">
+            <span class="title-text">Fiyat Hesaplayıcı</span>
+        </h2>
+        
+        <div class="calculator-container" id="calculator">
+            <div class="savings-badge">%25 İNDİRİM</div>
             
             <div class="calculator-options">
                 <div class="option-group">
-                    <label>Site Tipi</label>
-                    <select id="site-type">
-                        <option value="1500">Landing Page - Tek Sayfa (1,500 TL)</option>
-                        <option value="2500" selected>Kurumsal Site - 5 Sayfa (2,500 TL)</option>
-                        <option value="4000">E-Ticaret Sitesi (4,000 TL)</option>
-                        <option value="0">Özel Proje (Teklif Alın)</option>
-                    </select>
+                    <label>Hangi tür bir proje planlıyorsunuz?</label>
+                    <div class="custom-select">
+                        <select id="site-type">
+                            <option value="1500">Tek Sayfa Website - Hızlı çözüm (1,500 TL)</option>
+                            <option value="2500" selected>Kurumsal Website - Profesyonel imaj (2,500 TL)</option>
+                            <option value="4000">E-Ticaret Sitesi - Satış odaklı (4,000 TL)</option>
+                            <option value="6000">Özel Web Uygulaması - Tam özelleştirme (6,000 TL)</option>
+                            <option value="0">Enterprise Çözümü - Birlikte konuşalım</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <div class="option-group">
-                    <label>Ek Özellikler</label>
+                    <label>Hangi ek hizmetlere ihtiyacınız var?</label>
                     <div class="checkbox-group">
-                        <label>
-                            <input type="checkbox" value="500" data-feature="seo"> 
-                            SEO Optimizasyonu (+500 TL)
-                        </label>
-                        <label>
-                            <input type="checkbox" value="300" data-feature="speed"> 
-                            Hız Optimizasyonu (+300 TL)
-                        </label>
-                        <label>
-                            <input type="checkbox" value="400" data-feature="lang"> 
-                            Çoklu Dil Desteği (+400 TL)
-                        </label>
-                        <label>
-                            <input type="checkbox" value="600" data-feature="ecommerce"> 
-                            Ödeme Sistemi Entegrasyonu (+600 TL)
-                        </label>
-                        <label>
-                            <input type="checkbox" value="200" data-feature="chat"> 
-                            Canlı Destek Entegrasyonu (+200 TL)
-                        </label>
+                        <div class="checkbox-wrapper">
+                            <label>
+                                <input type="checkbox" value="500" data-feature="seo"> 
+                                <span>Google'da öne çıkma (SEO) (+500 TL)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <label>
+                                <input type="checkbox" value="300" data-feature="speed"> 
+                                <span>Çok hızlı yükleme (+300 TL)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <label>
+                                <input type="checkbox" value="400" data-feature="lang"> 
+                                <span>Farklı dillerde site (+400 TL)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <label>
+                                <input type="checkbox" value="600" data-feature="payment"> 
+                                <span>Online ödeme kabul etme (+600 TL)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <label>
+                                <input type="checkbox" value="800" data-feature="analytics"> 
+                                <span>Detaylı raporlama sistemi (+800 TL)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <label>
+                                <input type="checkbox" value="200" data-feature="chat"> 
+                                <span>Müşteri destek sistemi (+200 TL)</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <div class="calculator-result">
                 <div class="total-price">
-                    <span class="label">Toplam Tutar:</span>
-                    <span class="price" id="total-price">2,500 TL</span>
-                </div>
-                <div class="delivery-time">
-                    <span class="label">Tahmini Teslimat:</span>
-                    <span class="time" id="delivery-time">2-3 Gün</span>
+                    <span class="price-label">Toplam Maliyetiniz</span>
+                    <div class="price-display" id="total-price">2,500 TL</div>
                 </div>
                 
                 <div class="feature-tags" id="feature-tags">
-                    <span class="feature-tag">✓ SSL Sertifikası</span>
-                    <span class="feature-tag">✓ Mobil Uyumlu</span>
-                    <span class="feature-tag">✓ 1 Yıl Hosting</span>
+                    <span class="feature-tag">✨ SSL Güvenlik Sertifikası</span>
+                    <span class="feature-tag">📱 Mobil Uyumlu Tasarım</span>
+                    <span class="feature-tag">🚀 1 Yıl Ücretsiz Hosting</span>
+                    <span class="feature-tag">⚡ Hızlı Teslimat</span>
                 </div>
                 
-                <div class="pricing-breakdown" id="pricing-breakdown">
-                    <div class="breakdown-item">
-                        <span>Temel Paket:</span>
-                        <span id="base-price">2,500 TL</span>
-                    </div>
-                    <div class="breakdown-item total">
-                        <span>Toplam:</span>
-                        <span id="breakdown-total">2,500 TL</span>
-                    </div>
-                </div>
-                
-                <button class="btn-primary">
-                    Hemen Teklif Al →
+                <button class="btn-primary" id="cta-button">
+                    Projeye Başlayalım
                 </button>
             </div>
         </div>
     </section>
 
     <script>
-        // Pricing data
-        const deliveryTimes = {
-            1500: "1-2 Gün",
-            2500: "2-3 Gün",
-            4000: "4-5 Gün",
-            0: "Görüşmeye Bağlı"
-        };
+        // 3D Tilt Effect
+        const calculator = document.getElementById('calculator');
+        let mouseX = 0, mouseY = 0;
+        let currentX = 0, currentY = 0;
 
+        document.addEventListener('mousemove', (e) => {
+            const rect = calculator.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            mouseX = (e.clientX - centerX) / (rect.width / 2);
+            mouseY = (e.clientY - centerY) / (rect.height / 2);
+        });
+
+        function animate3D() {
+            currentX += (mouseX - currentX) * 0.1;
+            currentY += (mouseY - currentY) * 0.1;
+            
+            const tiltX = currentY * 5;
+            const tiltY = currentX * -5;
+            
+            calculator.style.transform = `
+                perspective(1000px)
+                rotateX(${tiltX}deg)
+                rotateY(${tiltY}deg)
+                translateZ(10px)
+            `;
+            
+            requestAnimationFrame(animate3D);
+        }
+        animate3D();
+
+        // Price Calculator
         const baseFeatures = {
-            1500: ["✓ SSL Sertifikası", "✓ Mobil Uyumlu", "✓ 6 Ay Hosting"],
-            2500: ["✓ SSL Sertifikası", "✓ Mobil Uyumlu", "✓ 1 Yıl Hosting"],
-            4000: ["✓ SSL Sertifikası", "✓ Mobil Uyumlu", "✓ 2 Yıl Hosting", "✓ Ürün Yönetimi"],
-            0: ["✓ Özel Çözümler", "✓ Tam Destek", "✓ Proje Bazlı"]
+            1500: ['✨ SSL Güvenlik Sertifikası', '📱 Mobil Uyumlu Tasarım', '🌐 6 Ay Hosting', '🛡️ Temel Güvenlik'],
+            2500: ['✨ SSL Güvenlik Sertifikası', '📱 Mobil Uyumlu Tasarım', '🚀 1 Yıl Hosting', '⚡ Hızlı Teslimat'],
+            4000: ['✨ SSL Güvenlik Sertifikası', '📱 Mobil Uyumlu Tasarım', '🚀 2 Yıl Hosting', '🛒 Ürün Yönetimi', '💳 Ödeme Sistemi'],
+            6000: ['✨ Özel Tasarım', '🔧 API Geliştirme', '☁️ Cloud Hosting', '📊 Analitik Paneli', '🔐 Gelişmiş Güvenlik'],
+            0: ['🏢 Kurumsal Çözüm', '🤝 Kişisel Destek', '📈 Sınırsız Özellik', '🎯 Garantili Sonuç']
         };
 
-        // Calculate price
+        const featureIcons = {
+            seo: '🔍 Google Optimizasyonu',
+            speed: '⚡ Hız Optimizasyonu',
+            lang: '🌍 Çoklu Dil Desteği',
+            payment: '💳 Ödeme Sistemi',
+            analytics: '📊 Raporlama Sistemi',
+            chat: '💬 Müşteri Desteği'
+        };
+
         function calculatePrice() {
             const siteType = document.getElementById('site-type');
             const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked');
@@ -431,127 +703,127 @@
             checkboxes.forEach(checkbox => {
                 additionalPrice += parseInt(checkbox.value);
                 const feature = checkbox.getAttribute('data-feature');
-                selectedFeatures.push(feature);
+                if (featureIcons[feature]) {
+                    selectedFeatures.push(featureIcons[feature]);
+                }
             });
             
             const totalPrice = basePrice + additionalPrice;
             
-            // Update UI
-            updatePriceDisplay(totalPrice, basePrice, additionalPrice);
-            updateDeliveryTime(basePrice, selectedFeatures);
+            updatePriceDisplay(totalPrice);
             updateFeatureTags(basePrice, selectedFeatures);
-            updateBreakdown(basePrice, checkboxes);
+            updateCTAButton(totalPrice);
         }
 
-        function updatePriceDisplay(total, base, additional) {
+        function updatePriceDisplay(total) {
             const priceElement = document.getElementById('total-price');
+            priceElement.classList.add('updating');
             
-            if (total === 0) {
-                priceElement.textContent = 'Teklif Alın';
-            } else {
-                // Animate price change
-                priceElement.style.animation = 'none';
-                setTimeout(() => {
-                    priceElement.style.animation = 'countUp 0.6s ease-out';
-                    priceElement.textContent = total.toLocaleString('tr-TR') + ' TL';
-                }, 10);
-            }
+            setTimeout(() => {
+                if (total === 0) {
+                    priceElement.textContent = 'Özel Teklif';
+                } else {
+                    animateValue(priceElement, parseInt(priceElement.textContent.replace(/[^\d]/g, '')) || 0, total, 500);
+                }
+                priceElement.classList.remove('updating');
+            }, 300);
         }
 
-        function updateDeliveryTime(basePrice, features) {
-            const deliveryElement = document.getElementById('delivery-time');
-            let baseTime = deliveryTimes[basePrice] || "Görüşmeye Bağlı";
+        function animateValue(element, start, end, duration) {
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
             
-            // Add extra time for complex features
-            if (features.includes('ecommerce') || features.includes('lang')) {
-                if (basePrice === 1500) baseTime = "2-3 Gün";
-                else if (basePrice === 2500) baseTime = "3-4 Gün";
-                else if (basePrice === 4000) baseTime = "5-7 Gün";
-            }
-            
-            deliveryElement.textContent = baseTime;
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current).toLocaleString('tr-TR') + ' TL';
+            }, 16);
         }
 
         function updateFeatureTags(basePrice, selectedFeatures) {
             const tagsContainer = document.getElementById('feature-tags');
+            const allFeatures = [...(baseFeatures[basePrice] || baseFeatures[0]), ...selectedFeatures];
+            
             tagsContainer.innerHTML = '';
-            
-            // Add base features
-            const features = baseFeatures[basePrice] || baseFeatures[0];
-            features.forEach(feature => {
-                const tag = document.createElement('span');
-                tag.className = 'feature-tag';
-                tag.textContent = feature;
-                tagsContainer.appendChild(tag);
-            });
-            
-            // Add selected features
-            const featureNames = {
-                seo: "✓ SEO Optimizasyonu",
-                speed: "✓ Hız Optimizasyonu",
-                lang: "✓ Çoklu Dil",
-                ecommerce: "✓ Ödeme Sistemi",
-                chat: "✓ Canlı Destek"
-            };
-            
-            selectedFeatures.forEach(feature => {
-                if (featureNames[feature]) {
+            allFeatures.forEach((feature, index) => {
+                setTimeout(() => {
                     const tag = document.createElement('span');
                     tag.className = 'feature-tag';
-                    tag.textContent = featureNames[feature];
-                    tag.style.borderColor = 'rgba(0, 212, 255, 0.3)';
-                    tag.style.backgroundColor = 'rgba(0, 212, 255, 0.1)';
-                    tag.style.color = 'var(--accent-cyan)';
+                    tag.textContent = feature;
+                    tag.style.animation = 'fadeInUp 0.5s ease forwards';
+                    tag.style.opacity = '0';
                     tagsContainer.appendChild(tag);
-                }
+                    
+                    setTimeout(() => {
+                        tag.style.opacity = '1';
+                    }, 50);
+                }, index * 100);
             });
         }
 
-        function updateBreakdown(basePrice, checkboxes) {
-            const breakdownContainer = document.getElementById('pricing-breakdown');
-            let html = '';
-            
-            if (basePrice > 0) {
-                html += `
-                    <div class="breakdown-item">
-                        <span>Temel Paket:</span>
-                        <span>${basePrice.toLocaleString('tr-TR')} TL</span>
-                    </div>
-                `;
-                
-                checkboxes.forEach(checkbox => {
-                    const label = checkbox.parentElement.textContent.trim();
-                    const price = parseInt(checkbox.value);
-                    html += `
-                        <div class="breakdown-item">
-                            <span>${label.split('(')[0].trim()}:</span>
-                            <span>+${price} TL</span>
-                        </div>
-                    `;
-                });
-                
-                const total = basePrice + Array.from(checkboxes).reduce((sum, cb) => sum + parseInt(cb.value), 0);
-                html += `
-                    <div class="breakdown-item total">
-                        <span>Toplam:</span>
-                        <span>${total.toLocaleString('tr-TR')} TL</span>
-                    </div>
-                `;
+        function updateCTAButton(total) {
+            const button = document.getElementById('cta-button');
+            if (total === 0) {
+                button.textContent = 'Birlikte Konuşalım';
+            } else if (total > 5000) {
+                button.textContent = 'Premium Projeye Başlayalım';
             } else {
-                html = '<div class="breakdown-item">Özel proje için iletişime geçin</div>';
+                button.textContent = 'Projeye Başlayalım';
             }
-            
-            breakdownContainer.innerHTML = html;
         }
 
-        // Event listeners
+        // Event Listeners
         document.getElementById('site-type').addEventListener('change', calculatePrice);
         document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(checkbox => {
-            checkbox.addEventListener('change', calculatePrice);
+            checkbox.addEventListener('change', function() {
+                calculatePrice();
+                
+                // Ripple effect
+                const label = this.parentElement;
+                const ripple = document.createElement('span');
+                ripple.style.position = 'absolute';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.background = 'rgba(0, 212, 255, 0.5)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+                ripple.style.left = '30px';
+                ripple.style.top = '50%';
+                
+                label.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
         });
 
         // Initialize
         calculatePrice();
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: translate(-50%, -50%) scale(20);
+                    opacity: 0;
+                }
+            }
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>

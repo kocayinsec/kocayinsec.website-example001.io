@@ -41,6 +41,7 @@
             height: 100%;
             z-index: -1;
             background: radial-gradient(ellipse at center, #1a1f3a 0%, #0A0E27 50%, #000 100%);
+            pointer-events: none;
         }
 
         .star {
@@ -351,49 +352,7 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Navigation */
-        .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            padding: 1rem 2rem;
-            background: rgba(10, 14, 39, 0.8);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 100;
-        }
-
-        .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: 'Inter', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--gray-light);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-cyan);
-        }
+        /* Simple Navigation Styles */
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -410,12 +369,49 @@
                 padding: 1rem;
             }
 
+            .mobile-menu-btn {
+                display: block;
+            }
+
             .nav-links {
-                display: none;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 39, 0.98);
+                backdrop-filter: blur(25px);
+                flex-direction: column;
+                padding: 2rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                transition: all 0.3s ease;
+                border-radius: 0;
+                border: none;
+                gap: 1rem;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            .nav-links a {
+                padding: 16px 24px;
+                font-size: 1.1rem;
+                border-radius: 12px;
+                text-align: center;
             }
 
             .header {
                 padding: 8rem 0 4rem;
+            }
+
+            .nav-content {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
             }
         }
 
@@ -447,16 +443,16 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav-content">
-            <div class="logo">Jerboa Studio's</div>
-            <ul class="nav-links">
-                <li><a href="#demos">Demos</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+    <div style="position: fixed; top: 0; left: 0; right: 0; background: rgba(10, 14, 39, 0.9); backdrop-filter: blur(10px); z-index: 99999; padding: 1rem 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-family: 'Inter', sans-serif; font-size: 1.5rem; font-weight: 700; color: #00D4FF;">Jerboa Studio's</div>
+            <div style="display: flex; gap: 2rem;">
+                <a href="#demos" style="color: #E5E7EB; text-decoration: none; padding: 10px 20px; border-radius: 8px;">Demos</a>
+                <a href="about-simple.html" style="color: #E5E7EB; text-decoration: none; padding: 10px 20px; border-radius: 8px;">About</a>
+                <a href="contacts.html" style="color: #E5E7EB; text-decoration: none; padding: 10px 20px; border-radius: 8px; background: rgba(0, 212, 255, 0.2); border: 1px solid #00D4FF;">Contact</a>
+            </div>
         </div>
-    </nav>
+    </div>
 
     <!-- Header -->
     <div class="header">
@@ -495,15 +491,30 @@
             </div>
 
             <div class="demo-card loading">
-                <h3>💰 Interactive Pricing Calculator</h3>
-                <p>Dynamic price calculation with smooth animations, feature selection, and real-time breakdown updates.</p>
+                <h3>💰 Dynamic Pricing Experience</h3>
+                <p>Ultra-responsive pricing calculator with 3D animations, particle effects, and magnetic interactions.</p>
                 <ul class="features">
-                    <li>Real-time price calculations</li>
-                    <li>Animated feature selection</li>
-                    <li>Dynamic delivery estimation</li>
-                    <li>Interactive cost breakdown</li>
+                    <li>3D tilt effects and particle systems</li>
+                    <li>Magnetic checkbox interactions</li>
+                    <li>Real-time animated counters</li>
+                    <li>Interactive floating background</li>
                 </ul>
-                <a href="pricing_calculator.html" class="demo-button">Calculate Now →</a>
+                <a href="pricing_calculator.html" class="demo-button">Experience Calculator →</a>
+            </div>
+        </div>
+
+        <!-- New Contact Demo Card -->
+        <div class="demos-grid" style="margin-top: 2rem;">
+            <div class="demo-card loading">
+                <h3>📞 Contact Experience</h3>
+                <p>Interactive contact interface with network animations, reactive backgrounds, and seamless communication flows.</p>
+                <ul class="features">
+                    <li>Animated network background</li>
+                    <li>Real-time status indicators</li>
+                    <li>Interactive form animations</li>
+                    <li>Magnetic social elements</li>
+                </ul>
+                <a href="contacts.html" class="demo-button">Connect Now →</a>
             </div>
         </div>
     </div>
@@ -568,7 +579,7 @@
             });
         }
 
-        // Smooth scroll for navigation
+        // Simple scroll for anchor links only
         function initSmoothScroll() {
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -583,11 +594,11 @@
             });
         }
 
-        // Initialize everything
+        // Initialize everything  
         document.addEventListener('DOMContentLoaded', () => {
             createStarfield();
             initParallax();
-            initSmoothScroll();
+            // Removed smooth scroll to prevent navigation interference
         });
 
         // Add more stars dynamically on scroll

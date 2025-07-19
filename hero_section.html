@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Hero Section - Web Developer Portfolio</title>
+    <title>Liquid Morphing Hero - Jerboa Studio's</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,6 +13,10 @@
             --white: #FFFFFF;
             --gray-light: #E5E7EB;
             --gray-medium: #9CA3AF;
+            --purple-accent: #9333EA;
+            --pink-accent: #EC4899;
+            --orange-accent: #F97316;
+            --blue-deep: #1E40AF;
         }
 
         * {
@@ -27,699 +31,782 @@
             color: var(--white);
             overflow-x: hidden;
             cursor: none;
+            user-select: none;
         }
 
-        /* Custom Cursor */
+        /* Magnetic Cursor */
         .cursor {
-            width: 20px;
-            height: 20px;
+            width: 25px;
+            height: 25px;
             border: 2px solid var(--accent-cyan);
             border-radius: 50%;
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-            transition: all 0.1s ease;
+            transition: all 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             mix-blend-mode: difference;
+            backdrop-filter: blur(3px);
         }
 
-        .cursor-trail {
-            width: 6px;
-            height: 6px;
+        .cursor-glow {
+            width: 8px;
+            height: 8px;
             background: var(--accent-cyan);
             border-radius: 50%;
             position: fixed;
             pointer-events: none;
             z-index: 9998;
-            transition: all 0.15s ease;
-            opacity: 0.7;
+            transition: all 0.12s ease-out;
+            opacity: 0.8;
+            box-shadow: 0 0 20px var(--accent-cyan);
         }
 
-        /* Animated Background */
+        .cursor-magnetic {
+            transform: scale(2.5);
+            border-color: var(--success-green);
+            background: rgba(0, 255, 136, 0.15);
+        }
+
+        /* Dynamic Wave Field Background */
         .hero {
             position: relative;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: 
-                linear-gradient(135deg, #0A0E27 0%, #1a1f3a 50%, #0A0E27 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 8s ease infinite;
+            background: linear-gradient(45deg, #0A0E27, #1a1f3a, #2D1B69);
             overflow: hidden;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* 3D Geometric Shapes */
-        .geometric-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .shape {
-            position: absolute;
-            opacity: 0.1;
-            animation: float3D 20s infinite linear;
-        }
-
-        .shape.cube {
-            width: 60px;
-            height: 60px;
-            background: var(--accent-cyan);
-            transform-style: preserve-3d;
-            animation: rotate3D 10s infinite linear;
-        }
-
-        .shape.triangle {
-            width: 0;
-            height: 0;
-            border-left: 30px solid transparent;
-            border-right: 30px solid transparent;
-            border-bottom: 52px solid var(--success-green);
-            animation: triangleFloat 15s infinite ease-in-out;
-        }
-
-        .shape.circle {
-            width: 40px;
-            height: 40px;
-            background: var(--accent-cyan);
-            border-radius: 50%;
-            animation: pulse3D 3s infinite ease-in-out;
-        }
-
-        @keyframes float3D {
-            0% { transform: translateY(100vh) rotateX(0deg) rotateY(0deg); }
-            100% { transform: translateY(-100vh) rotateX(360deg) rotateY(360deg); }
-        }
-
-        @keyframes rotate3D {
-            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-        }
-
-        @keyframes triangleFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        @keyframes pulse3D {
-            0%, 100% { transform: scale(1) rotateZ(0deg); }
-            50% { transform: scale(1.5) rotateZ(180deg); }
-        }
-
-        /* Enhanced Grid Pattern */
-        .grid-overlay {
+        .wave-field {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(rgba(0,212,255,0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,212,255,0.1) 1px, transparent 1px);
-            background-size: 100px 100px;
-            animation: gridMove 20s infinite linear;
+            z-index: 1;
         }
 
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(100px, 100px); }
+        .wave-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+        }
+
+        .wave-1 {
+            background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+            animation: wave-flow-1 8s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        .wave-2 {
+            background: linear-gradient(-45deg, transparent, rgba(147, 51, 234, 0.2), transparent);
+            animation: wave-flow-2 12s ease-in-out infinite;
+            animation-delay: -2s;
+        }
+
+        .wave-3 {
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            animation: wave-flow-3 15s ease-in-out infinite;
+            animation-delay: -4s;
+        }
+
+        .wave-4 {
+            background: radial-gradient(ellipse at 30% 70%, rgba(236, 72, 153, 0.3), transparent);
+            animation: wave-flow-4 10s ease-in-out infinite;
+            animation-delay: -6s;
+        }
+
+        /* Energy Pulse Effects */
+        .energy-pulse {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.8), transparent);
+            animation: energy-pulse 3s ease-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes energy-pulse {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(8);
+                opacity: 0;
+            }
+        }
+
+        @keyframes wave-flow-1 {
+            0%, 100% {
+                transform: translateX(-100%) skewX(0deg) scaleY(1);
+                opacity: 0;
+            }
+            25% {
+                transform: translateX(-50%) skewX(15deg) scaleY(1.2);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateX(0%) skewX(0deg) scaleY(1);
+                opacity: 1;
+            }
+            75% {
+                transform: translateX(50%) skewX(-15deg) scaleY(0.8);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes wave-flow-2 {
+            0%, 100% {
+                transform: translateY(-100%) skewY(0deg) scaleX(1);
+                opacity: 0;
+            }
+            25% {
+                transform: translateY(-50%) skewY(-10deg) scaleX(1.3);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(0%) skewY(0deg) scaleX(1);
+                opacity: 0.8;
+            }
+            75% {
+                transform: translateY(50%) skewY(10deg) scaleX(0.7);
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes wave-flow-3 {
+            0%, 100% {
+                transform: translate(-50%, -50%) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+            33% {
+                transform: translate(-25%, -25%) rotate(120deg) scale(1.2);
+                opacity: 0.6;
+            }
+            66% {
+                transform: translate(25%, 25%) rotate(240deg) scale(0.8);
+                opacity: 0.4;
+            }
+        }
+
+        @keyframes wave-flow-4 {
+            0%, 100% {
+                transform: scale(0.3) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.5) rotate(180deg);
+                opacity: 0.8;
+            }
+        }
+
+        /* Neural Network Effect */
+        .neural-network {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            opacity: 0.6;
+        }
+
+        .neural-node {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: node-pulse 4s ease-in-out infinite;
+        }
+
+        .neural-connection {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+            transform-origin: left center;
+            opacity: 0;
+            animation: connection-pulse 6s ease-in-out infinite;
+        }
+
+        @keyframes node-pulse {
+            0%, 100% {
+                opacity: 0.8;
+                transform: scale(1);
+                box-shadow: 0 0 5px var(--accent-cyan);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(2);
+                box-shadow: 0 0 25px var(--accent-cyan);
+            }
+        }
+
+        @keyframes connection-pulse {
+            0%, 90%, 100% { opacity: 0; }
+            45%, 55% { opacity: 0.8; }
+        }
+
+        /* Floating Symbols */
+        .floating-symbols {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .symbol {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.3;
+            animation: symbol-float 20s ease-in-out infinite;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes symbol-float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translateY(-80px) rotate(90deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-40px) rotate(180deg);
+                opacity: 0.4;
+            }
+            75% {
+                transform: translateY(-120px) rotate(270deg);
+                opacity: 0.8;
+            }
         }
 
         /* Hero Content */
         .hero-content {
             text-align: center;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
             z-index: 10;
             position: relative;
+            max-width: 900px;
+            padding: 2rem;
         }
 
         .hero-title {
             font-family: 'Inter', sans-serif;
-            font-size: clamp(2rem, 5vw, 4rem);
+            font-size: clamp(3rem, 8vw, 7rem);
             font-weight: 700;
             margin-bottom: 1.5rem;
-            line-height: 1.2;
             position: relative;
+            letter-spacing: -0.02em;
         }
 
-        /* Advanced Typing Animation with Glitch Effect */
-        .typing-animation {
+        .title-word {
             display: inline-block;
+            background: linear-gradient(135deg, 
+                var(--white) 0%, 
+                var(--accent-cyan) 20%, 
+                var(--purple-accent) 40%, 
+                var(--pink-accent) 60%, 
+                var(--orange-accent) 80%, 
+                var(--white) 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: title-flow 6s ease infinite;
             position: relative;
-            color: var(--accent-cyan);
-            animation: textGlow 2s ease-in-out infinite alternate;
+            margin: 0 0.2em;
         }
 
-        .typing-animation::before {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            color: var(--success-green);
-            z-index: -1;
-            animation: glitch 3s infinite;
-        }
+        .title-word:nth-child(1) { animation-delay: 0s; }
+        .title-word:nth-child(2) { animation-delay: -2s; }
 
-        .typing-animation::after {
-            content: '|';
-            position: absolute;
-            right: -20px;
-            top: 0;
-            color: var(--success-green);
-            animation: cursor-blink 1s infinite, cursor-move 0.1s infinite;
-        }
-
-        @keyframes textGlow {
-            0% { text-shadow: 0 0 10px var(--accent-cyan); }
-            100% { text-shadow: 0 0 20px var(--accent-cyan), 0 0 30px var(--accent-cyan); }
-        }
-
-        @keyframes glitch {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(-2px); }
-            40% { transform: translateX(2px); }
-            60% { transform: translateX(-1px); }
-            80% { transform: translateX(1px); }
-            100% { transform: translateX(0); }
-        }
-
-        @keyframes cursor-blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        @keyframes cursor-move {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-2px); }
-            100% { transform: translateY(0); }
+        @keyframes title-flow {
+            0% { 
+                background-position: 0% 50%;
+                transform: translateY(0);
+            }
+            50% { 
+                background-position: 100% 50%;
+                transform: translateY(-10px);
+            }
+            100% { 
+                background-position: 0% 50%;
+                transform: translateY(0);
+            }
         }
 
         .hero-subtitle {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
             color: var(--gray-light);
-            margin-bottom: 2.5rem;
-            font-weight: 300;
-            animation: subtitleFade 2s ease-out 0.5s both;
-        }
-
-        @keyframes subtitleFade {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Enhanced CTAs */
-        .hero-cta {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
             margin-bottom: 3rem;
-        }
-
-        .btn-primary, .btn-secondary {
+            opacity: 0.9;
+            line-height: 1.6;
             position: relative;
-            padding: 18px 40px;
-            font-size: 1.1rem;
+        }
+
+        .subtitle-highlight {
+            background: linear-gradient(45deg, var(--accent-cyan), var(--success-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            overflow: hidden;
-            z-index: 1;
         }
 
-        .btn-primary::before,
-        .btn-secondary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.6s;
-            z-index: -1;
-        }
-
-        .btn-primary:hover::before,
-        .btn-secondary:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--success-green));
-            color: var(--primary-dark);
-            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--white);
-            border: 2px solid var(--accent-cyan);
-            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0, 212, 255, 0.1);
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2);
-        }
-
-        /* Enhanced Badges */
-        .hero-badges {
+        /* Interactive CTA */
+        .cta-container {
             display: flex;
             gap: 2rem;
             justify-content: center;
             flex-wrap: wrap;
         }
 
-        .badge {
+        .cta-button {
+            padding: 20px 40px;
+            border: none;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
             position: relative;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 12px 24px;
-            background: rgba(0, 212, 255, 0.1);
-            border: 2px solid rgba(0, 212, 255, 0.3);
-            border-radius: 30px;
-            font-size: 0.9rem;
-            color: var(--accent-cyan);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
             overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .badge::before {
+        .cta-primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--purple-accent));
+            color: var(--white);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: var(--accent-cyan);
+            border: 2px solid var(--accent-cyan);
+        }
+
+        .cta-button::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.8s ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
         }
 
-        .badge:hover::before {
-            transform: translateX(100%);
+        .cta-button:hover::before {
+            left: 100%;
         }
 
-        .badge:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+        .cta-button:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 
+                0 25px 50px rgba(0, 212, 255, 0.4),
+                0 0 100px rgba(0, 212, 255, 0.2);
         }
 
-        .badge:nth-child(1) { animation: slideIn 0.8s ease-out 0.2s both; }
-        .badge:nth-child(2) { animation: slideIn 0.8s ease-out 0.4s both; }
-        .badge:nth-child(3) { animation: slideIn 0.8s ease-out 0.6s both; }
-
-        /* Enhanced Particles */
-        .particles {
+        /* Magnetic field effect */
+        .magnetic-field {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
             pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: var(--accent-cyan);
+            z-index: 100;
+            width: 200px;
+            height: 200px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-cyan);
-            animation: particleFloat 25s infinite linear;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .particle:nth-child(odd) {
-            background: var(--success-green);
-            box-shadow: 0 0 10px var(--success-green);
+        .magnetic-field.active {
+            opacity: 1;
+            animation: magnetic-pulse 1s ease-out infinite;
         }
 
-        @keyframes particleFloat {
+        @keyframes magnetic-pulse {
             0% {
-                transform: translateY(100vh) translateX(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
+                transform: scale(1);
                 opacity: 1;
             }
             100% {
-                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                transform: scale(2);
                 opacity: 0;
             }
         }
 
-        /* Interactive Elements */
-        .interactive-zone {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .mouse-follower {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            z-index: 2;
-        }
-
-        /* Animations */
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                padding: 1rem;
             }
-            to {
-                opacity: 1;
-                transform: translateX(0);
+            
+            .cta-container {
+                gap: 1rem;
+            }
+            
+            .cta-button {
+                padding: 16px 32px;
+                font-size: 1rem;
             }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
+        /* Loading Animation */
+        .loading {
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideUp 1.2s ease-out forwards;
+        }
+
+        @keyframes slideUp {
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
-        .hero-content {
-            animation: fadeInUp 1s ease-out;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .hero-cta {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn-primary, .btn-secondary {
-                width: 100%;
-                max-width: 320px;
-                justify-content: center;
-            }
-            
-            .hero-badges {
-                gap: 1rem;
-            }
-            
-            .badge {
-                font-size: 0.8rem;
-                padding: 8px 16px;
-            }
-        }
-
-        /* Click Explosion Effect */
-        .explosion {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: var(--accent-cyan);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            animation: explode 0.6s ease-out forwards;
-        }
-
-        @keyframes explode {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(3);
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 <body>
+    <!-- SVG Filters -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="gooey">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="gooey" />
+                <feBlend in="SourceGraphic" in2="gooey" />
+            </filter>
+        </defs>
+    </svg>
+
     <div class="cursor"></div>
-    <div class="cursor-trail"></div>
-    
+    <div class="cursor-glow"></div>
+    <div class="magnetic-field"></div>
+
     <section class="hero">
-        <div class="grid-overlay"></div>
-        
-        <div class="geometric-shapes" id="shapes"></div>
-        
-        <div class="particles" id="particles"></div>
-        
-        <div class="interactive-zone">
-            <div class="mouse-follower" id="mouseFollower"></div>
+        <!-- Dynamic Wave Field Background -->
+        <div class="wave-field">
+            <div class="wave-layer wave-1"></div>
+            <div class="wave-layer wave-2"></div>
+            <div class="wave-layer wave-3"></div>
+            <div class="wave-layer wave-4"></div>
         </div>
-        
-        <div class="hero-content">
+
+        <!-- Neural Network -->
+        <div class="neural-network" id="neuralNetwork"></div>
+
+        <!-- Floating Symbols -->
+        <div class="floating-symbols">
+            <div class="symbol" style="top: 15%; left: 10%; animation-delay: 0s;">{ }</div>
+            <div class="symbol" style="top: 25%; right: 15%; animation-delay: -3s;">&lt; /&gt;</div>
+            <div class="symbol" style="bottom: 30%; left: 20%; animation-delay: -6s;">⚡</div>
+            <div class="symbol" style="top: 60%; right: 10%; animation-delay: -9s;">🚀</div>
+            <div class="symbol" style="bottom: 20%; right: 30%; animation-delay: -12s;">✨</div>
+            <div class="symbol" style="top: 40%; left: 5%; animation-delay: -15s;">💎</div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="hero-content loading">
             <h1 class="hero-title">
-                <span class="typing-animation" id="typing-text" data-text=""></span>
+                <span class="title-word">JERBOA</span>
+                <span class="title-word">STUDIO'S</span>
             </h1>
+            
             <p class="hero-subtitle">
-                15+ yıllık deneyimle, modern ve etkileşimli web çözümleri
+                Web'in geleceğini <span class="subtitle-highlight">bugünden</span> yaratıyoruz.<br>
+                Sıradışı deneyimlerle markanızı dijital dünyada <span class="subtitle-highlight">öne çıkarın</span>.
             </p>
-            <div class="hero-cta">
-                <button class="btn-primary" onclick="createExplosion(event)">
-                    Hemen Başlayalım ⚡
-                </button>
-                <button class="btn-secondary" onclick="createExplosion(event)">
-                    Portfolyo İncele 🚀
-                </button>
-            </div>
-            <div class="hero-badges">
-                <span class="badge">⚡ 48 Saat Teslimat</span>
-                <span class="badge">📱 %100 Mobil Uyumlu</span>
-                <span class="badge">🔒 SSL Sertifikalı</span>
+            
+            <div class="cta-container">
+                <a href="#" class="cta-button cta-primary" data-magnetic>
+                    Projeye Başla
+                </a>
+                <a href="#" class="cta-button cta-secondary" data-magnetic>
+                    Portfolio İncele
+                </a>
             </div>
         </div>
     </section>
 
     <script>
-        // Enhanced Typing Animation
-        const texts = [
-            "Web Sitenizi 3 Günde Hazırlıyorum",
-            "Modern ve Etkileşimli Web Çözümleri",
-            "Dinamik E-Ticaret Sistemleri",
-            "Profesyonel Dashboard Tasarımları",
-            "Güvenli ve Hızlı Web Uygulamaları"
-        ];
-        
-        let textIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        let typingSpeed = 80;
-        
-        function typeText() {
-            const currentText = texts[textIndex];
-            const typingElement = document.getElementById('typing-text');
+        // Enhanced Cursor System
+        const cursor = document.querySelector('.cursor');
+        const cursorGlow = document.querySelector('.cursor-glow');
+        const magneticField = document.querySelector('.magnetic-field');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            glowX += (mouseX - glowX) * 0.15;
+            glowY += (mouseY - glowY) * 0.15;
             
-            if (!isDeleting && charIndex < currentText.length) {
-                typingElement.textContent += currentText.charAt(charIndex);
-                typingElement.setAttribute('data-text', currentText);
-                charIndex++;
-                typingSpeed = 80 + Math.random() * 40;
-            } else if (isDeleting && charIndex > 0) {
-                typingElement.textContent = currentText.substring(0, charIndex - 1);
-                charIndex--;
-                typingSpeed = 40;
-            } else if (charIndex === currentText.length) {
-                isDeleting = true;
-                typingSpeed = 2500;
-            } else if (charIndex === 0) {
-                isDeleting = false;
-                textIndex = (textIndex + 1) % texts.length;
-                typingSpeed = 800;
-            }
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
             
-            setTimeout(typeText, typingSpeed);
+            requestAnimationFrame(animateCursor);
         }
-        
-        // Enhanced Particle System
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
+        animateCursor();
+
+        // Magnetic Effect System
+        const magneticElements = document.querySelectorAll('[data-magnetic]');
+        magneticElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.classList.add('cursor-magnetic');
+                magneticField.classList.add('active');
+                magneticField.style.left = (mouseX - 100) + 'px';
+                magneticField.style.top = (mouseY - 100) + 'px';
+            });
             
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 25 + 's';
-                particle.style.animationDuration = (20 + Math.random() * 15) + 's';
+            element.addEventListener('mouseleave', () => {
+                cursor.classList.remove('cursor-magnetic');
+                magneticField.classList.remove('active');
+                element.style.transform = '';
+            });
+            
+            element.addEventListener('mousemove', (e) => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
                 
-                // Random size variation
-                const size = 4 + Math.random() * 6;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
+                element.style.transform = `translate(${x * 0.4}px, ${y * 0.4}px)`;
+                magneticField.style.left = (mouseX - 100) + 'px';
+                magneticField.style.top = (mouseY - 100) + 'px';
+            });
+        });
+
+        // Neural Network Generator
+        function createNeuralNetwork() {
+            const network = document.getElementById('neuralNetwork');
+            const nodeCount = 20;
+            const nodes = [];
+
+            // Create nodes
+            for (let i = 0; i < nodeCount; i++) {
+                const node = document.createElement('div');
+                node.className = 'neural-node';
+                node.style.left = Math.random() * 100 + '%';
+                node.style.top = Math.random() * 100 + '%';
+                node.style.animationDelay = Math.random() * 4 + 's';
+                network.appendChild(node);
                 
-                particlesContainer.appendChild(particle);
+                nodes.push({
+                    element: node,
+                    x: parseFloat(node.style.left),
+                    y: parseFloat(node.style.top)
+                });
+            }
+
+            // Create connections
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const distance = Math.sqrt(
+                        Math.pow(nodes[i].x - nodes[j].x, 2) + 
+                        Math.pow(nodes[i].y - nodes[j].y, 2)
+                    );
+                    
+                    if (distance < 30) {
+                        const connection = document.createElement('div');
+                        connection.className = 'neural-connection';
+                        
+                        const angle = Math.atan2(nodes[j].y - nodes[i].y, nodes[j].x - nodes[i].x);
+                        const length = distance;
+                        
+                        connection.style.left = nodes[i].x + '%';
+                        connection.style.top = nodes[i].y + '%';
+                        connection.style.width = length + 'vw';
+                        connection.style.transform = `rotate(${angle}rad)`;
+                        connection.style.animationDelay = Math.random() * 6 + 's';
+                        
+                        network.appendChild(connection);
+                    }
+                }
             }
         }
-        
-        // 3D Geometric Shapes
-        function createGeometricShapes() {
-            const shapesContainer = document.getElementById('shapes');
-            const shapeTypes = ['cube', 'triangle', 'circle'];
-            const shapeCount = 15;
-            
-            for (let i = 0; i < shapeCount; i++) {
-                const shape = document.createElement('div');
-                const shapeType = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
-                shape.className = `shape ${shapeType}`;
-                shape.style.left = Math.random() * 100 + '%';
-                shape.style.animationDelay = Math.random() * 20 + 's';
-                shape.style.animationDuration = (15 + Math.random() * 10) + 's';
-                
-                shapesContainer.appendChild(shape);
-            }
-        }
-        
-        // Custom Cursor
-        function initCustomCursor() {
-            const cursor = document.querySelector('.cursor');
-            const cursorTrail = document.querySelector('.cursor-trail');
-            
+
+        // Dynamic Wave Interactive Response
+        function initWaveInteraction() {
+            const waves = document.querySelectorAll('.wave-layer');
             let mouseX = 0, mouseY = 0;
-            let trailX = 0, trailY = 0;
             
             document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
+                mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
                 
-                cursor.style.left = mouseX - 10 + 'px';
-                cursor.style.top = mouseY - 10 + 'px';
+                waves.forEach((wave, index) => {
+                    const intensity = (index + 1) * 15;
+                    const speed = 0.1 + (index * 0.05);
+                    
+                    // Create reactive distortion based on mouse position
+                    const distortX = mouseX * intensity;
+                    const distortY = mouseY * intensity;
+                    const rotation = mouseX * 10;
+                    const scale = 1 + (Math.abs(mouseX) + Math.abs(mouseY)) * 0.1;
+                    
+                    wave.style.transform = `translate(${distortX}px, ${distortY}px) rotate(${rotation}deg) scale(${scale})`;
+                    wave.style.filter = `hue-rotate(${mouseX * 30}deg) brightness(${1 + Math.abs(mouseY) * 0.3})`;
+                });
             });
             
-            // Smooth trail follow
-            function updateTrail() {
-                trailX += (mouseX - trailX) * 0.1;
-                trailY += (mouseY - trailY) * 0.1;
-                
-                cursorTrail.style.left = trailX - 3 + 'px';
-                cursorTrail.style.top = trailY - 3 + 'px';
-                
-                requestAnimationFrame(updateTrail);
-            }
-            updateTrail();
-        }
-        
-        // Mouse Follower Effect
-        function initMouseFollower() {
-            const mouseFollower = document.getElementById('mouseFollower');
-            
-            document.addEventListener('mousemove', (e) => {
-                const x = e.clientX;
-                const y = e.clientY;
-                
-                mouseFollower.style.left = x - 100 + 'px';
-                mouseFollower.style.top = y - 100 + 'px';
+            // Reset on mouse leave
+            document.addEventListener('mouseleave', () => {
+                waves.forEach(wave => {
+                    wave.style.transform = '';
+                    wave.style.filter = '';
+                });
             });
         }
-        
-        // Click Explosion Effect
-        function createExplosion(event) {
-            const explosion = document.createElement('div');
-            explosion.className = 'explosion';
+
+        // Dynamic Wave Color Shifting
+        function initWaveColorShifting() {
+            const waves = document.querySelectorAll('.wave-layer');
+            let colorIndex = 0;
             
-            const rect = event.target.getBoundingClientRect();
-            const x = rect.left + rect.width / 2;
-            const y = rect.top + rect.height / 2;
+            const waveColorSets = [
+                {
+                    wave1: 'linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.4), transparent)',
+                    wave2: 'linear-gradient(-45deg, transparent, rgba(147, 51, 234, 0.3), transparent)',
+                    wave3: 'linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent)',
+                    wave4: 'radial-gradient(ellipse at 30% 70%, rgba(236, 72, 153, 0.4), transparent)'
+                },
+                {
+                    wave1: 'linear-gradient(45deg, transparent, rgba(236, 72, 153, 0.4), transparent)',
+                    wave2: 'linear-gradient(-45deg, transparent, rgba(0, 255, 136, 0.3), transparent)',
+                    wave3: 'linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.3), transparent)',
+                    wave4: 'radial-gradient(ellipse at 70% 30%, rgba(0, 212, 255, 0.4), transparent)'
+                },
+                {
+                    wave1: 'linear-gradient(45deg, transparent, rgba(249, 115, 22, 0.4), transparent)',
+                    wave2: 'linear-gradient(-45deg, transparent, rgba(0, 212, 255, 0.3), transparent)',
+                    wave3: 'linear-gradient(90deg, transparent, rgba(147, 51, 234, 0.3), transparent)',
+                    wave4: 'radial-gradient(ellipse at 50% 50%, rgba(0, 255, 136, 0.4), transparent)'
+                }
+            ];
             
-            explosion.style.left = x + 'px';
-            explosion.style.top = y + 'px';
+            setInterval(() => {
+                const currentSet = waveColorSets[colorIndex];
+                waves[0].style.background = currentSet.wave1;
+                waves[1].style.background = currentSet.wave2;
+                waves[2].style.background = currentSet.wave3;
+                waves[3].style.background = currentSet.wave4;
+                
+                colorIndex = (colorIndex + 1) % waveColorSets.length;
+            }, 6000);
+        }
+
+        // Enhanced Energy Pulse Effect
+        function createEnergyPulse(x, y) {
+            const pulse = document.createElement('div');
+            pulse.className = 'energy-pulse';
+            pulse.style.left = (x - 50) + 'px';
+            pulse.style.top = (y - 50) + 'px';
+            pulse.style.zIndex = '1000';
             
-            document.body.appendChild(explosion);
+            // Random color variations
+            const colors = [
+                'rgba(0, 212, 255, 0.8)',
+                'rgba(147, 51, 234, 0.8)', 
+                'rgba(0, 255, 136, 0.8)',
+                'rgba(236, 72, 153, 0.8)'
+            ];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            pulse.style.background = `radial-gradient(circle, ${randomColor}, transparent)`;
             
-            setTimeout(() => {
-                explosion.remove();
-            }, 600);
+            document.body.appendChild(pulse);
             
-            // Create multiple small explosions
-            for (let i = 0; i < 8; i++) {
+            // Create multiple smaller pulses
+            for (let i = 0; i < 3; i++) {
                 setTimeout(() => {
-                    const miniExplosion = document.createElement('div');
-                    miniExplosion.className = 'explosion';
-                    miniExplosion.style.left = (x + (Math.random() - 0.5) * 100) + 'px';
-                    miniExplosion.style.top = (y + (Math.random() - 0.5) * 100) + 'px';
-                    miniExplosion.style.background = Math.random() > 0.5 ? 'var(--accent-cyan)' : 'var(--success-green)';
-                    
-                    document.body.appendChild(miniExplosion);
-                    
-                    setTimeout(() => {
-                        miniExplosion.remove();
-                    }, 600);
-                }, i * 50);
+                    const smallPulse = pulse.cloneNode();
+                    smallPulse.style.left = (x - 25 + Math.random() * 50) + 'px';
+                    smallPulse.style.top = (y - 25 + Math.random() * 50) + 'px';
+                    smallPulse.style.width = '50px';
+                    smallPulse.style.height = '50px';
+                    document.body.appendChild(smallPulse);
+                    setTimeout(() => smallPulse.remove(), 3000);
+                }, i * 200);
             }
+            
+            setTimeout(() => pulse.remove(), 3000);
         }
-        
+
+        document.addEventListener('click', (e) => {
+            createEnergyPulse(e.clientX, e.clientY);
+        });
+
+        // Title Word Animation
+        function initTitleAnimation() {
+            const words = document.querySelectorAll('.title-word');
+            
+            words.forEach((word, index) => {
+                word.addEventListener('mouseenter', function() {
+                    this.style.animation = 'none';
+                    this.style.transform = 'scale(1.1) rotate(2deg)';
+                    this.style.textShadow = '0 0 30px rgba(0, 212, 255, 0.8)';
+                });
+                
+                word.addEventListener('mouseleave', function() {
+                    this.style.animation = `title-flow 6s ease infinite`;
+                    this.style.animationDelay = `${index * -2}s`;
+                    this.style.transform = '';
+                    this.style.textShadow = '';
+                });
+            });
+        }
+
         // Initialize everything
         document.addEventListener('DOMContentLoaded', () => {
-            typeText();
-            createParticles();
-            createGeometricShapes();
-            initCustomCursor();
-            initMouseFollower();
+            createNeuralNetwork();
+            initWaveInteraction();
+            initWaveColorShifting();
+            initTitleAnimation();
             
-            // Add more dynamic particles on scroll
-            window.addEventListener('scroll', () => {
-                if (Math.random() > 0.7) {
-                    createParticles();
+            // Stagger content animation
+            setTimeout(() => {
+                document.querySelector('.hero-content').classList.add('loading');
+            }, 500);
+        });
+
+        // Add dynamic styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple-expand {
+                to {
+                    transform: scale(50);
+                    opacity: 0;
                 }
-            });
-        });
-        
-        // Interactive hover effects
-        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(button => {
-            button.addEventListener('mouseenter', () => {
-                document.querySelector('.cursor').style.transform = 'scale(1.5)';
-            });
-            
-            button.addEventListener('mouseleave', () => {
-                document.querySelector('.cursor').style.transform = 'scale(1)';
-            });
-        });
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Performance optimization
+        let ticking = false;
+        function optimizedUpdate() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    // Batch DOM updates here
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
     </script>
 </body>
 </html>
