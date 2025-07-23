@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +13,9 @@
             --white: #FFFFFF;
             --gray-light: #E5E7EB;
             --gray-medium: #9CA3AF;
-            --purple-accent: #9333EA;
-            --pink-accent: #EC4899;
-            --yellow-accent: #F59E0B;
-            --orange-accent: #F97316;
+            --purple-deep: #2D1B69;
+            --purple-light: #4C2A85;
+            --gold: #FFD700;
         }
 
         * {
@@ -27,111 +26,121 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: #0A0E27;
+            background: linear-gradient(135deg, #0A0E27 0%, #1a1f3a 50%, #2D1B69 100%);
             color: var(--white);
-            min-height: 100vh;
-            position: relative;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Dynamic Background */
-        .contact-bg {
+        /* Dynamic Starfield Background */
+        .starfield {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            overflow: hidden;
+            background: radial-gradient(ellipse at center, #1a1f3a 0%, #0A0E27 50%, #000 100%);
+            pointer-events: none;
         }
 
-        .network-node {
+        .star {
             position: absolute;
-            width: 6px;
-            height: 6px;
-            background: var(--accent-cyan);
+            background: var(--white);
             border-radius: 50%;
-            opacity: 0.6;
-            animation: pulse-node 3s ease-in-out infinite;
+            box-shadow: 0 0 6px currentColor;
+            animation: twinkle 3s ease-in-out infinite;
         }
 
-        .network-line {
-            position: absolute;
+        .star.large {
+            width: 4px;
+            height: 4px;
+            box-shadow: 0 0 12px var(--gold), 0 0 24px var(--gold);
+            animation: pulseStar 4s ease-in-out infinite;
+        }
+
+        .star.medium {
+            width: 2px;
+            height: 2px;
+            box-shadow: 0 0 8px var(--accent-cyan), 0 0 16px var(--accent-cyan);
+        }
+
+        .star.small {
+            width: 1px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-            opacity: 0;
-            animation: line-flash 4s ease-in-out infinite;
-            transform-origin: left center;
+            box-shadow: 0 0 4px var(--white);
         }
 
-        @keyframes pulse-node {
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes pulseStar {
             0%, 100% { 
-                opacity: 0.6;
-                transform: scale(1);
-                box-shadow: 0 0 5px var(--accent-cyan);
+                opacity: 0.6; 
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 12px var(--gold), 0 0 24px var(--gold);
             }
             50% { 
-                opacity: 1;
-                transform: scale(1.5);
-                box-shadow: 0 0 20px var(--accent-cyan);
+                opacity: 1; 
+                transform: scale(1.5) rotate(180deg);
+                box-shadow: 0 0 20px var(--gold), 0 0 40px var(--gold);
             }
         }
 
-        @keyframes line-flash {
-            0%, 90%, 100% { opacity: 0; }
-            45%, 55% { opacity: 0.8; }
-        }
-
-        /* Energy orbs */
-        .energy-orb {
+        /* Floating Orbs */
+        .floating-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.4;
-            animation: orb-float 15s ease-in-out infinite;
+            background: radial-gradient(circle at 30% 30%, var(--accent-cyan), transparent);
+            opacity: 0.3;
+            animation: floatOrb 15s ease-in-out infinite;
         }
 
         .orb-1 {
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, var(--purple-accent), transparent);
+            width: 120px;
+            height: 120px;
             top: 20%;
             left: 10%;
             animation-delay: 0s;
         }
 
         .orb-2 {
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, var(--pink-accent), transparent);
-            bottom: 30%;
-            right: 20%;
-            animation-delay: -5s;
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 5s;
+            background: radial-gradient(circle at 30% 30%, var(--success-green), transparent);
         }
 
         .orb-3 {
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, var(--yellow-accent), transparent);
-            top: 60%;
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
             left: 60%;
-            animation-delay: -10s;
+            animation-delay: 10s;
+            background: radial-gradient(circle at 30% 30%, var(--gold), transparent);
         }
 
-        @keyframes orb-float {
+        @keyframes floatOrb {
             0%, 100% {
-                transform: translateY(0) translateX(0) scale(1);
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+                opacity: 0.3;
             }
             33% {
-                transform: translateY(-50px) translateX(30px) scale(1.2);
+                transform: translateY(-30px) translateX(20px) rotate(120deg);
+                opacity: 0.6;
             }
             66% {
-                transform: translateY(30px) translateX(-20px) scale(0.8);
+                transform: translateY(20px) translateX(-15px) rotate(240deg);
+                opacity: 0.4;
             }
         }
 
-        /* Main Container */
-        .contact-container {
+        /* Content Containers */
+        .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
@@ -139,47 +148,75 @@
             z-index: 1;
         }
 
-        .hero-section {
+        .header {
             text-align: center;
-            padding: 4rem 0;
+            padding: 6rem 0 4rem;
             position: relative;
+            overflow: hidden;
         }
 
-        .main-title {
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .header h1 {
             font-family: 'Inter', sans-serif;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-size: clamp(2.5rem, 6vw, 4rem);
             font-weight: 700;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .title-gradient {
-            background: linear-gradient(135deg, 
-                var(--white) 0%, 
-                var(--accent-cyan) 15%, 
-                var(--purple-accent) 30%, 
-                var(--pink-accent) 45%, 
-                var(--orange-accent) 60%, 
-                var(--success-green) 75%, 
-                var(--white) 100%);
-            background-size: 300% 300%;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--white) 0%, var(--accent-cyan) 50%, var(--gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: rainbow-flow 8s ease infinite;
+            position: relative;
+            animation: titleGlow 3s ease-in-out infinite;
         }
 
-        @keyframes rainbow-flow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes titleGlow {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 60px rgba(255, 215, 0, 0.3);
+            }
         }
 
-        .subtitle {
-            font-size: 1.4rem;
+        .header p {
+            font-size: 1.5rem;
             color: var(--gray-light);
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             opacity: 0.9;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: var(--success-green);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+                transform: scale(1.05);
+            }
         }
 
         /* Contact Grid */
@@ -498,31 +535,21 @@
                 0 0 60px rgba(0, 212, 255, 0.2);
         }
 
-        /* Floating Elements */
-        .floating-element {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.1;
-            animation: float-random 20s ease-in-out infinite;
-            pointer-events: none;
+        /* Loading Animation */
+        .loading {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
         }
 
-        @keyframes float-random {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.1;
-            }
-            25% {
-                transform: translateY(-50px) rotate(90deg);
-                opacity: 0.3;
-            }
-            50% {
-                transform: translateY(-20px) rotate(180deg);
-                opacity: 0.2;
-            }
-            75% {
-                transform: translateY(-80px) rotate(270deg);
-                opacity: 0.4;
+        .loading:nth-child(1) { animation-delay: 0.2s; }
+        .loading:nth-child(2) { animation-delay: 0.4s; }
+        .loading:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
@@ -579,61 +606,68 @@
     </style>
 </head>
 <body>
-    <!-- Dynamic Background -->
-    <div class="contact-bg">
-        <div class="energy-orb orb-1"></div>
-        <div class="energy-orb orb-2"></div>
-        <div class="energy-orb orb-3"></div>
+    <!-- Dynamic Starfield Background -->
+    <div class="starfield" id="starfield">
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+        <div class="floating-orb orb-3"></div>
     </div>
 
-    <!-- Floating Elements -->
-    <div class="floating-element" style="top: 15%; left: 5%; animation-delay: 0s;">📧</div>
-    <div class="floating-element" style="top: 25%; right: 10%; animation-delay: -3s;">💬</div>
-    <div class="floating-element" style="bottom: 30%; left: 15%; animation-delay: -6s;">📞</div>
-    <div class="floating-element" style="top: 60%; right: 5%; animation-delay: -9s;">🚀</div>
-    <div class="floating-element" style="bottom: 15%; right: 25%; animation-delay: -12s;">⚡</div>
-
-    <div class="contact-container">
-        <!-- Hero Section -->
-        <div class="hero-section">
-            <h1 class="main-title">
-                <span class="title-gradient">İletişim Deneyimi</span>
-            </h1>
-            <p class="subtitle">Projelerinizi gerçeğe dönüştürmek için bir mesaj uzaklıktayız</p>
+    <!-- Navigation -->
+    <div style="position: fixed; top: 0; left: 0; right: 0; background: rgba(10, 14, 39, 0.9); backdrop-filter: blur(10px); z-index: 99999; padding: 1rem 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-family: 'Inter', sans-serif; font-size: 1.5rem; font-weight: 700; color: #00D4FF;">Jerboa Studio's</div>
+            <div style="display: flex; gap: 2rem;">
+                <a href="index.html" style="color: #E5E7EB; text-decoration: none; padding: 10px 20px; border-radius: 8px;">Demos</a>
+                <a href="about-simple.html" style="color: #E5E7EB; text-decoration: none; padding: 10px 20px; border-radius: 8px;">About</a>
+                <a href="contacts.html" style="color: #E5E7EB; text-decoration: none; padding: 10px 20px; border-radius: 8px; background: rgba(0, 212, 255, 0.2); border: 1px solid #00D4FF;">Contact</a>
+            </div>
         </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <h1>Contact Experience</h1>
+            <p>Let's Transform Your Ideas Into Reality</p>
+            <div class="badge">📞 CONNECT WITH US</div>
+        </div>
+    </div>
+
+    <div class="container">
 
         <!-- Contact Grid -->
         <div class="contact-grid">
             <!-- Contact Form -->
             <div class="contact-form">
-                <h2 class="form-title">Mesaj Gönder</h2>
+                <h2 class="form-title">Send Message</h2>
                 <form id="contactForm">
                     <div class="form-group">
-                        <label for="name">İsim</label>
+                        <label for="name">Name</label>
                         <input type="text" id="name" name="name" class="form-input" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="email">E-posta</label>
+                        <label for="email">Email</label>
                         <input type="email" id="email" name="email" class="form-input" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="subject">Konu</label>
+                        <label for="subject">Subject</label>
                         <input type="text" id="subject" name="subject" class="form-input" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="message">Mesaj</label>
+                        <label for="message">Message</label>
                         <textarea id="message" name="message" class="form-textarea" rows="5" required></textarea>
                     </div>
                     
                     <button type="submit" class="submit-btn">
-                        Mesaj Gönder
+                        Send Message
                     </button>
                     
                     <div class="success-message" id="successMessage">
-                        ✅ Mesajınız başarıyla gönderildi! En kısa sürede dönüş yapacağız.
+                        ✅ Your message has been sent successfully! We'll get back to you soon.
                     </div>
                 </form>
             </div>
@@ -642,14 +676,14 @@
             <div class="contact-info">
                 <div class="info-card">
                     <div class="info-icon">📧</div>
-                    <h3 class="info-title">E-posta</h3>
+                    <h3 class="info-title">Email</h3>
                     <p class="info-content">
                         <a href="mailto:hello@jerboastudio.com" class="info-link">hello@jerboastudio.com</a><br>
-                        <small>7/24 aktif destek</small>
+                        <small>24/7 active support</small>
                     </p>
                     <div class="status-indicator">
                         <div class="status-dot"></div>
-                        <span>Aktif - Ortalama 2 saat içinde yanıt</span>
+                        <span>Active - Average response within 2 hours</span>
                     </div>
                 </div>
 
@@ -658,37 +692,37 @@
                     <h3 class="info-title">WhatsApp</h3>
                     <p class="info-content">
                         <a href="https://wa.me/905551234567" class="info-link" target="_blank">+90 555 123 45 67</a><br>
-                        <small>Hızlı iletişim ve destek</small>
+                        <small>Fast communication and support</small>
                     </p>
                     <div class="status-indicator">
                         <div class="status-dot"></div>
-                        <span>Çevrimiçi - Anında yanıt</span>
+                        <span>Online - Instant response</span>
                     </div>
                 </div>
 
                 <div class="info-card">
                     <div class="info-icon">🌍</div>
-                    <h3 class="info-title">Lokasyon</h3>
+                    <h3 class="info-title">Location</h3>
                     <p class="info-content">
-                        İstanbul, Türkiye<br>
-                        <small>Uzaktan çalışma modeli</small>
+                        Istanbul, Turkey<br>
+                        <small>Remote work model</small>
                     </p>
                     <div class="status-indicator">
                         <div class="status-dot"></div>
-                        <span>GMT+3 - Pazartesi-Cumartesi</span>
+                        <span>GMT+3 - Monday-Saturday</span>
                     </div>
                 </div>
 
                 <div class="info-card">
                     <div class="info-icon">⚡</div>
-                    <h3 class="info-title">Acil Durum</h3>
+                    <h3 class="info-title">Emergency</h3>
                     <p class="info-content">
                         <a href="tel:+905551234567" class="info-link">+90 555 123 45 67</a><br>
-                        <small>Kritik projeler için</small>
+                        <small>For critical projects</small>
                     </p>
                     <div class="status-indicator">
                         <div class="status-dot"></div>
-                        <span>7/24 Mevcut</span>
+                        <span>24/7 Available</span>
                     </div>
                 </div>
             </div>
@@ -696,7 +730,7 @@
 
         <!-- Social Section -->
         <div class="social-section">
-            <h2 class="social-title">Sosyal Medya</h2>
+            <h2 class="social-title">Social Media</h2>
             <div class="social-links">
                 <a href="#" class="social-link" title="GitHub">
                     <span>⚡</span>
@@ -718,52 +752,57 @@
     </div>
 
     <script>
-        // Network Background Animation
-        function createNetworkBackground() {
-            const bg = document.querySelector('.contact-bg');
-            const nodeCount = 15;
-            const nodes = [];
+        // Remove old floating elements functionality
 
-            // Create nodes
-            for (let i = 0; i < nodeCount; i++) {
-                const node = document.createElement('div');
-                node.className = 'network-node';
-                node.style.left = Math.random() * 100 + '%';
-                node.style.top = Math.random() * 100 + '%';
-                node.style.animationDelay = Math.random() * 3 + 's';
-                bg.appendChild(node);
-                nodes.push({
-                    element: node,
-                    x: parseFloat(node.style.left),
-                    y: parseFloat(node.style.top)
-                });
-            }
+        // Create Dynamic Starfield
+        function createStarfield() {
+            const starfield = document.getElementById('starfield');
+            const starCount = 150;
 
-            // Create connecting lines
-            for (let i = 0; i < nodes.length; i++) {
-                for (let j = i + 1; j < nodes.length; j++) {
-                    const distance = Math.sqrt(
-                        Math.pow(nodes[i].x - nodes[j].x, 2) + 
-                        Math.pow(nodes[i].y - nodes[j].y, 2)
-                    );
-                    
-                    if (distance < 40) { // Only connect close nodes
-                        const line = document.createElement('div');
-                        line.className = 'network-line';
-                        
-                        const angle = Math.atan2(nodes[j].y - nodes[i].y, nodes[j].x - nodes[i].x);
-                        const length = distance;
-                        
-                        line.style.left = nodes[i].x + '%';
-                        line.style.top = nodes[i].y + '%';
-                        line.style.width = length + 'vw';
-                        line.style.transform = `rotate(${angle}rad)`;
-                        line.style.animationDelay = Math.random() * 4 + 's';
-                        
-                        bg.appendChild(line);
-                    }
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random star types
+                const rand = Math.random();
+                if (rand > 0.95) {
+                    star.classList.add('large');
+                } else if (rand > 0.8) {
+                    star.classList.add('medium');
+                } else {
+                    star.classList.add('small');
                 }
+
+                // Random positioning
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                
+                // Random animation delay
+                star.style.animationDelay = Math.random() * 3 + 's';
+                
+                // Random animation duration
+                star.style.animationDuration = (2 + Math.random() * 3) + 's';
+
+                starfield.appendChild(star);
             }
+        }
+
+        // Mouse parallax effect for orbs
+        function initParallax() {
+            const orbs = document.querySelectorAll('.floating-orb');
+            
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                orbs.forEach((orb, index) => {
+                    const speed = (index + 1) * 0.5;
+                    const x = (mouseX - 0.5) * speed * 50;
+                    const y = (mouseY - 0.5) * speed * 50;
+                    
+                    orb.style.transform = `translate(${x}px, ${y}px)`;
+                });
+            });
         }
 
         // Form Animation
@@ -805,13 +844,13 @@
                 
                 // Button animation
                 submitBtn.style.transform = 'scale(0.95)';
-                submitBtn.textContent = 'Gönderiliyor...';
+                submitBtn.textContent = 'Sending...';
                 submitBtn.disabled = true;
                 
                 // Simulate submission
                 setTimeout(() => {
                     submitBtn.style.transform = 'scale(1)';
-                    submitBtn.textContent = '✅ Gönderildi!';
+                    submitBtn.textContent = '✅ Sent!';
                     
                     // Show success message
                     successMessage.style.display = 'block';
@@ -819,7 +858,7 @@
                     // Reset form
                     setTimeout(() => {
                         form.reset();
-                        submitBtn.textContent = 'Mesaj Gönder';
+                        submitBtn.textContent = 'Send Message';
                         submitBtn.disabled = false;
                         successMessage.style.display = 'none';
                     }, 3000);
@@ -852,23 +891,17 @@
             });
         }
 
-        // Interactive Background
-        function initInteractiveBackground() {
-            let mouseX = 0, mouseY = 0;
-            
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX / window.innerWidth;
-                mouseY = e.clientY / window.innerHeight;
-                
-                // Move orbs based on mouse position
-                const orbs = document.querySelectorAll('.energy-orb');
-                orbs.forEach((orb, index) => {
-                    const speed = (index + 1) * 0.3;
-                    const x = (mouseX - 0.5) * speed * 30;
-                    const y = (mouseY - 0.5) * speed * 30;
-                    
-                    orb.style.transform = `translate(${x}px, ${y}px)`;
-                });
+        // Loading Animation
+        function initLoadingAnimation() {
+            const elements = document.querySelectorAll('.contact-form, .info-card');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    el.style.transition = 'all 0.8s ease-out';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 200);
             });
         }
 
@@ -920,11 +953,12 @@
 
         // Initialize everything
         document.addEventListener('DOMContentLoaded', () => {
-            createNetworkBackground();
+            createStarfield();
+            initParallax();
             initFormAnimations();
             initFormSubmission();
             initInfoCardsAnimation();
-            initInteractiveBackground();
+            initLoadingAnimation();
             initSocialAnimation();
             initScrollAnimations();
         });
