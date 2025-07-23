@@ -457,9 +457,12 @@
     <!-- Header -->
     <div class="header">
         <div class="container">
-            <h1>Jerboa Studio's</h1>
-            <p>Dynamic Web Experiences & Interactive Solutions</p>
-            <div class="badge">🚀 LIVE INTERACTIVE DEMOS</div>
+            <h1 class="loading">
+                <span class="title-word">JERBOA</span>
+                <span class="title-word">STUDIO'S</span>
+            </h1>
+            <p class="loading">Dynamic Web Experiences & Interactive Solutions</p>
+            <div class="badge loading">🚀 LIVE INTERACTIVE DEMOS</div>
         </div>
     </div>
 
@@ -594,10 +597,31 @@
             });
         }
 
+        // Title Word Animation
+        function initTitleAnimation() {
+            const words = document.querySelectorAll('.title-word');
+            
+            words.forEach((word, index) => {
+                word.addEventListener('mouseenter', function() {
+                    this.style.animation = 'none';
+                    this.style.transform = 'scale(1.1) rotate(2deg)';
+                    this.style.textShadow = '0 0 30px rgba(0, 212, 255, 0.8)';
+                });
+                
+                word.addEventListener('mouseleave', function() {
+                    this.style.animation = `title-flow 6s ease infinite`;
+                    this.style.animationDelay = `${index * -2}s`;
+                    this.style.transform = '';
+                    this.style.textShadow = '';
+                });
+            });
+        }
+
         // Initialize everything  
         document.addEventListener('DOMContentLoaded', () => {
             createStarfield();
             initParallax();
+            initTitleAnimation();
             // Removed smooth scroll to prevent navigation interference
         });
 
