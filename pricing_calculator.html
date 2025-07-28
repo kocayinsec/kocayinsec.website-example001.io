@@ -135,12 +135,6 @@
 
         .calculator-container:hover::before {
             opacity: 0.8;
-            animation: border-dance 3s linear infinite;
-        }
-
-        @keyframes border-dance {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         /* Options styling */
@@ -312,12 +306,6 @@
             width: 200%;
             height: 200%;
             background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
-            animation: pulse-rotate 8s linear infinite;
-        }
-
-        @keyframes pulse-rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         .total-price {
@@ -353,9 +341,9 @@
         }
 
         @keyframes price-update {
-            0% { transform: scale(1) rotateX(0); opacity: 1; }
-            50% { transform: scale(1.2) rotateX(180deg); opacity: 0.5; }
-            100% { transform: scale(1) rotateX(360deg); opacity: 1; }
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         /* CTA Button */
@@ -552,37 +540,7 @@
     </section>
 
     <script>
-        // 3D Tilt Effect
-        const calculator = document.getElementById('calculator');
-        let mouseX = 0, mouseY = 0;
-        let currentX = 0, currentY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            const rect = calculator.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
-            mouseX = (e.clientX - centerX) / (rect.width / 2);
-            mouseY = (e.clientY - centerY) / (rect.height / 2);
-        });
-
-        function animate3D() {
-            currentX += (mouseX - currentX) * 0.1;
-            currentY += (mouseY - currentY) * 0.1;
-            
-            const tiltX = currentY * 5;
-            const tiltY = currentX * -5;
-            
-            calculator.style.transform = `
-                perspective(1000px)
-                rotateX(${tiltX}deg)
-                rotateY(${tiltY}deg)
-                translateZ(10px)
-            `;
-            
-            requestAnimationFrame(animate3D);
-        }
-        animate3D();
+        // Removed 3D tilt effect to reduce visual clutter
 
         // Price Calculator
         const baseFeatures = {
