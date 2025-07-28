@@ -616,33 +616,6 @@
             });
         });
 
-        // Dynamic background particles (optional enhancement)
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.style.position = 'fixed';
-            particle.style.width = '4px';
-            particle.style.height = '4px';
-            particle.style.background = 'rgba(0, 212, 255, 0.5)';
-            particle.style.borderRadius = '50%';
-            particle.style.pointerEvents = 'none';
-            particle.style.left = Math.random() * window.innerWidth + 'px';
-            particle.style.top = window.innerHeight + 'px';
-            particle.style.zIndex = '1';
-            
-            document.body.appendChild(particle);
-            
-            const duration = Math.random() * 3000 + 2000;
-            particle.animate([
-                { transform: 'translateY(0) scale(1)', opacity: 1 },
-                { transform: `translateY(-${window.innerHeight}px) scale(0)`, opacity: 0 }
-            ], {
-                duration: duration,
-                easing: 'ease-out'
-            }).onfinish = () => particle.remove();
-        }
-
-        // Create particles periodically
-        setInterval(createParticle, 300);
     </script>
 </body>
 </html><!-- Cache bust: Mon Jul 28 19:39:08 CEST 2025 -->
