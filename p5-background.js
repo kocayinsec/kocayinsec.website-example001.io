@@ -1,115 +1,140 @@
-let lines = [];
-let numLines = 5;
+let particles = [];
+let noiseScale = 0.01;
+let flowField;
+let cols, rows;
+let zoff = 0;
+let inc = 0.1;
+let scl = 10;
+let particleAlpha = 5;
 
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
-  canvas.parent(document.querySelector('main'));
+  canvas.position(0, 0);
+  canvas.style('z-index', '-2');
   
-  // Dark background
-  background(10, 14, 27);
+  colorMode(HSB, 360, 100, 100, 100);
+  background(230, 30, 10);
   
-  // Initialize flowing lines
-  for (let i = 0; i < numLines; i++) {
-    lines.push(new FlowLine());
+  cols = floor(width / scl);
+  rows = floor(height / scl);
+  flowField = new Array(cols * rows);
+  
+  for (let i = 0; i < 2000; i++) {
+    particles[i] = new Particle();
   }
 }
 
 function draw() {
-  // Subtle fade
-  fill(10, 14, 27, 25);
-  noStroke();
-  rect(0, 0, width, height);
-  
-  // Update and draw all lines
-  for (let line of lines) {
-    line.update();
-    line.display();
-  }
-}
-
-class FlowLine {
-  constructor() {
-    this.points = [];
-    this.maxPoints = 150;
-    this.noiseOffset = random(1000);
-    this.speed = random(0.001, 0.003);
-    this.amplitude = random(100, 300);
-    this.yBase = random(height);
-    this.hue = random(180, 200); // Cyan range
-    
-    // Initialize points
-    for (let i = 0; i < this.maxPoints; i++) {
-      let x = map(i, 0, this.maxPoints - 1, -50, width + 50);
-      this.points.push({
-        x: x,
-        y: this.yBase
-      });
-    }
+  if (frameCount % 60 === 0) {
+    background(230, 30, 10, 20);
   }
   
-  update() {
-    this.noiseOffset += this.speed;
-    
-    // Update each point's y position using Perlin noise
-    for (let i = 0; i < this.points.length; i++) {
-      let noiseVal = noise(i * 0.02, this.noiseOffset);
-      this.points[i].y = this.yBase + map(noiseVal, 0, 1, -this.amplitude, this.amplitude);
+  let yoff = 0;
+  for (let y = 0; y < rows; y++) {
+    let xoff = 0;
+    for (let x = 0; x < cols; x++) {
+      let index = x + y * cols;
+      let angle = noise(xoff, yoff, zoff) * TWO_PI * 2;
+      let v = p5.Vector.fromAngle(angle);
+      v.setMag(0.5);
+      flowField[index] = v;
+      xoff += inc;
     }
-    
-    // Slowly drift the base position
-    this.yBase += sin(this.noiseOffset * 0.5) * 0.2;
-    
-    // Keep within bounds
-    if (this.yBase < -this.amplitude) this.yBase = height + this.amplitude;
-    if (this.yBase > height + this.amplitude) this.yBase = -this.amplitude;
+    yoff += inc;
   }
+  zoff += 0.003;
   
-  display() {
-    noFill();
-    strokeWeight(2);
-    
-    // Draw the main line with gradient effect
-    for (let i = 0; i < this.points.length - 1; i++) {
-      let alpha = map(i, 0, this.points.length - 1, 0, 100);
-      stroke(0, 212, 255, alpha);
-      line(
-        this.points[i].x, 
-        this.points[i].y,
-        this.points[i + 1].x, 
-        this.points[i + 1].y
-      );
-    }
-    
-    // Add glow effect
-    strokeWeight(4);
-    for (let i = 0; i < this.points.length - 1; i++) {
-      let alpha = map(i, 0, this.points.length - 1, 0, 30);
-      stroke(0, 212, 255, alpha);
-      line(
-        this.points[i].x, 
-        this.points[i].y,
-        this.points[i + 1].x, 
-        this.points[i + 1].y
-      );
-    }
+  for (let particle of particles) {
+    particle.follow(flowField);
+    particle.update();
+    particle.edges();
+    particle.show();
   }
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  background(10, 14, 27);
+  background(230, 30, 10);
+  cols = floor(width / scl);
+  rows = floor(height / scl);
+  flowField = new Array(cols * rows);
 }
 
-// Mouse interaction
+class Particle {
+  constructor() {
+    this.pos = createVector(random(width), random(height));
+    this.vel = createVector(0, 0);
+    this.acc = createVector(0, 0);
+    this.maxSpeed = 2;
+    this.prevPos = this.pos.copy();
+    
+    this.hue = random(200, 260);
+    this.sat = random(20, 60);
+    this.bright = random(80, 100);
+  }
+  
+  update() {
+    this.vel.add(this.acc);
+    this.vel.limit(this.maxSpeed);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+  }
+  
+  follow(vectors) {
+    let x = floor(this.pos.x / scl);
+    let y = floor(this.pos.y / scl);
+    let index = x + y * cols;
+    let force = vectors[index];
+    if (force) {
+      this.applyForce(force);
+    }
+  }
+  
+  applyForce(force) {
+    this.acc.add(force);
+  }
+  
+  show() {
+    stroke(this.hue, this.sat, this.bright, particleAlpha);
+    strokeWeight(1);
+    line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
+    this.updatePrev();
+  }
+  
+  updatePrev() {
+    this.prevPos.x = this.pos.x;
+    this.prevPos.y = this.pos.y;
+  }
+  
+  edges() {
+    if (this.pos.x > width) {
+      this.pos.x = 0;
+      this.updatePrev();
+    }
+    if (this.pos.x < 0) {
+      this.pos.x = width;
+      this.updatePrev();
+    }
+    if (this.pos.y > height) {
+      this.pos.y = 0;
+      this.updatePrev();
+    }
+    if (this.pos.y < 0) {
+      this.pos.y = height;
+      this.updatePrev();
+    }
+  }
+}
+
 function mouseMoved() {
-  for (let line of lines) {
-    for (let point of line.points) {
-      let d = dist(mouseX, mouseY, point.x, point.y);
-      if (d < 100) {
-        let force = map(d, 0, 100, 10, 0);
-        let angle = atan2(point.y - mouseY, point.x - mouseX);
-        point.y += sin(angle) * force;
-      }
+  let mouseInfluence = 50;
+  for (let particle of particles) {
+    let d = dist(mouseX, mouseY, particle.pos.x, particle.pos.y);
+    if (d < mouseInfluence) {
+      let angle = atan2(particle.pos.y - mouseY, particle.pos.x - mouseX);
+      let force = p5.Vector.fromAngle(angle);
+      force.mult(2);
+      particle.applyForce(force);
     }
   }
 }
