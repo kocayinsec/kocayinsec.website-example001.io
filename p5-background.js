@@ -9,7 +9,10 @@ let particleAlpha = 5;
 
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
-  canvas.position(0, 0);
+  canvas.parent(document.querySelector('main'));
+  canvas.style('position', 'fixed');
+  canvas.style('top', '0');
+  canvas.style('left', '0');
   canvas.style('z-index', '-2');
   
   colorMode(HSB, 360, 100, 100, 100);
