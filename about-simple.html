@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
     <style>
+        :root {
+            --primary-dark: #0A0E27;
+            --accent-cyan: #00D4FF;
+            --success-green: #00FF88;
+            --white: #FFFFFF;
+            --gray-light: #E5E7EB;
+            --gray-medium: #9CA3AF;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -168,7 +177,7 @@
         }
 
         .nav-link:hover {
-            color: #FFFFFF;
+            color: var(--white);
             background: rgba(0, 212, 255, 0.08);
             border-color: rgba(0, 212, 255, 0.2);
             transform: translateY(-2px);
@@ -178,14 +187,14 @@
         .nav-link.primary {
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 255, 136, 0.1) 100%);
             border: 1px solid rgba(0, 212, 255, 0.3);
-            color: #00d4ff;
+            color: var(--accent-cyan);
             font-weight: 600;
         }
 
         .nav-link.primary:hover {
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.25) 0%, rgba(0, 255, 136, 0.2) 100%);
             border-color: rgba(0, 212, 255, 0.5);
-            color: #FFFFFF;
+            color: var(--white);
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(0, 212, 255, 0.3);
         }
@@ -768,4 +777,4 @@
     </script>
     <script src="p5-background.js"></script>
 </body>
-</html><!-- Cache bust: Mon Jul 28 19:39:08 CEST 2025 -->
+</html><!-- Cache bust: Sun Aug 3 2025 navbar fix --><!-- Cache bust: Mon Jul 28 19:39:08 CEST 2025 -->
