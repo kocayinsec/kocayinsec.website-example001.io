@@ -6,7 +6,6 @@
     <title>Jerboa Studio's - Dynamic Web Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
             --primary-dark: #0A0E27;
@@ -640,10 +639,10 @@
             <a href="index.html" class="nav-logo"></a>
             <div class="nav-links" id="navLinks">
                 <a href="index.html" class="nav-link">Home</a>
-                <a href="#game" class="nav-link">🏁 Play Game</a>
                 <a href="#demos" class="nav-link">Demos</a>
                 <a href="about-simple.html" class="nav-link">About</a>
-                <a href="contacts.html" class="nav-link primary">Contact</a>
+                <a href="contacts.html" class="nav-link">Contact</a>
+                <a href="play-game.html" class="nav-link primary">🏁 Play Game</a>
             </div>
             <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
         </div>
@@ -717,24 +716,6 @@
         </div>
     </div>
 
-    <!-- Interactive Game Section -->
-    <section class="game-section" id="game">
-        <div class="game-container">
-            <div class="game-header">
-                <h2>🏁 DRIFT RACING EXPERIENCE</h2>
-                <p>Play our interactive 3D racing game - Drift, collect gems, and show your skills!</p>
-            </div>
-            <div class="game-wrapper">
-                <div id="drift-game-container"></div>
-            </div>
-            <div class="game-controls">
-                <button class="game-btn" onclick="startGame()">🎮 Start Game</button>
-                <button class="game-btn" onclick="resetGame()">🔄 Reset</button>
-                <button class="game-btn" onclick="toggleFullscreen()">📺 Fullscreen</button>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <div class="footer">
         <div class="container">
@@ -806,108 +787,5 @@
         });
     </script>
     <script src="p5-background.js"></script>
-    <script src="drift-game.js"></script>
-    <script>
-        let driftGame = null;
-        let gameStarted = false;
-
-        function startGame() {
-            if (!gameStarted) {
-                const container = document.getElementById('drift-game-container');
-                if (container) {
-                    // Clear any existing game
-                    if (driftGame) {
-                        driftGame.destroy();
-                    }
-                    
-                    // Create new game instance
-                    driftGame = new DriftRacingGame(container);
-                    gameStarted = true;
-                    
-                    // Update button text
-                    const startBtn = document.querySelector('.game-btn');
-                    if (startBtn) {
-                        startBtn.textContent = '⏸️ Pause';
-                        startBtn.onclick = togglePause;
-                    }
-                }
-            }
-        }
-
-        function togglePause() {
-            if (driftGame && gameStarted) {
-                if (driftGame.gameRunning) {
-                    driftGame.gameRunning = false;
-                    document.querySelector('.game-btn').textContent = '▶️ Resume';
-                } else {
-                    driftGame.gameRunning = true;
-                    document.querySelector('.game-btn').textContent = '⏸️ Pause';
-                }
-            }
-        }
-
-        function resetGame() {
-            if (driftGame) {
-                driftGame.destroy();
-                driftGame = null;
-                gameStarted = false;
-                
-                // Reset button
-                const startBtn = document.querySelector('.game-btn');
-                if (startBtn) {
-                    startBtn.textContent = '🎮 Start Game';
-                    startBtn.onclick = startGame;
-                }
-                
-                // Clear the container
-                const container = document.getElementById('drift-game-container');
-                container.innerHTML = '';
-            }
-        }
-
-        function toggleFullscreen() {
-            const gameWrapper = document.querySelector('.game-wrapper');
-            if (!document.fullscreenElement) {
-                gameWrapper.requestFullscreen().catch(err => {
-                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
-                });
-            } else {
-                document.exitFullscreen();
-            }
-        }
-
-        // Auto-start game when section is in view
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.5
-        };
-
-        const gameObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !gameStarted) {
-                    // Auto-start the game when scrolled into view
-                    setTimeout(() => {
-                        startGame();
-                    }, 500);
-                }
-            });
-        }, observerOptions);
-
-        // Start observing when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            const gameSection = document.querySelector('.game-section');
-            if (gameSection) {
-                gameObserver.observe(gameSection);
-            }
-        });
-
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            if (driftGame) {
-                driftGame.destroy();
-            }
-        });
-    </script>
 </body>
 </html>
