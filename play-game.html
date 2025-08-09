@@ -7,6 +7,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
+        :root {
+            --primary-dark: #0A0E27;
+            --accent-cyan: #00D4FF;
+            --success-green: #00FF88;
+            --white: #FFFFFF;
+            --gray-light: #E5E7EB;
+            --gray-medium: #9CA3AF;
+            --purple-deep: #2D1B69;
+            --purple-light: #4C2A85;
+            --gold: #FFD700;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -71,7 +83,7 @@
             font-family: 'Inter', sans-serif;
             font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #00D4FF 0%, #00FF88 100%);
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--success-green) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -115,7 +127,7 @@
         }
 
         .nav-link:hover {
-            color: #fff;
+            color: var(--white);
             background: rgba(0, 212, 255, 0.08);
             border-color: rgba(0, 212, 255, 0.2);
             transform: translateY(-2px);
@@ -125,14 +137,14 @@
         .nav-link.primary {
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 255, 136, 0.1) 100%);
             border: 1px solid rgba(0, 212, 255, 0.3);
-            color: #00D4FF;
+            color: var(--accent-cyan);
             font-weight: 600;
         }
 
         .nav-link.primary:hover {
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.25) 0%, rgba(0, 255, 136, 0.2) 100%);
             border-color: rgba(0, 212, 255, 0.5);
-            color: #fff;
+            color: var(--white);
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(0, 212, 255, 0.3);
         }
@@ -188,12 +200,17 @@
             display: none;
             background: none;
             border: none;
-            color: #fff;
+            color: var(--white);
             font-size: 1.5rem;
             cursor: pointer;
             padding: 8px;
             border-radius: 8px;
             transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-cyan);
         }
 
         @media (max-width: 768px) {
